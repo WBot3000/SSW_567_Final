@@ -60,24 +60,47 @@ class TravelDataError:
 
 #Functions
 #General
-def getNumericalValue(char):
-    if len(char) != 1:
-        return -1 #TODO: Might want to throw an exception instead
-    elif (char >= 'A' and char <= 'Z'):
-        return ord(char) - 55 #Because ord(A) = 65, and A = 10 in example
-    else:
-        return 0
+# def getNumericalValue(char):
+#     if len(char) != 1:
+#         return False #TODO: Might want to throw an exception instead
+#     elif (char >= 'A' and char <= 'Z'):
+#         return ord(char) - 55 #Because ord(A) = 65, and A = 10 in example
+#     else:
+#         return 0
+def getNumericalValue(i):
+    try:
+        int(i)
+        return int(i)
+    except ValueError:
+        if (str(i) >= 'A' and str(i) <= 'Z'):
+            return int(ord(str(i)) - 55)
+        else:
+            return 0
+
+# def calculateCheck(lst):
+#     weights = [7, 3, 1]
+#     weightIdx = 0
+#     total = 0
+    
+#     for i in lst:
+#         numVal = getNumericalValue(i)
+#         total += (numVal * weights[weightIdx])
+#         weightIdx = (weightIdx + 1) % len(weights)
+#     return total % 10
+
+
+
 
 #TODO: Should this return a string instead?
-def calculateCheck(field):
-    weights = [7, 3, 1]
-    weightIdx = 0
-    total = 0
-    for char in field:
-        numVal = getNumericalValue(char)
-        total += (numVal * weights[weightIdx])
-        weightIdx = (weightIdx + 1) % len(weights)
-    return total % 10
+# def calculateCheck(field):
+#     weights = [7, 3, 1]
+#     weightIdx = 0
+#     total = 0
+#     for char in field:
+#         numVal = getNumericalValue(char)
+#         total += (numVal * weights[weightIdx])
+#         weightIdx = (weightIdx + 1) % len(weights)
+#     return total % 10
     
 
 #Requirement 1
@@ -144,3 +167,5 @@ def checkMismatches(travelData):
     if (int(travelData.personalNoCheck) == calculateCheck(travelData.personalNo)):
         errors.personalError = True
     return errors
+
+
