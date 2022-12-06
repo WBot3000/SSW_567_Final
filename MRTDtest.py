@@ -20,11 +20,11 @@ class TestMRTD(unittest.TestCase):
     def testCalculateCheck(self):
         self.assertEqual(calculateCheck(testData), 5, "should be 5")
         self.assertEqual(calculateCheck(testData2), 6, "should be 6")
-        self.assertEqual(calculateCheck(testData3), 2, "should be 2")
+        self.assertEqual(calculateCheck(testData5), 1, "should be 1")
         
         #Failed
+        self.assertEqual(calculateCheck(testData3), 2, "should be 2")
         self.assertEqual(calculateCheck(testData4), 9, "should be 9")
-        self.assertEqual(calculateCheck(testData5), 1, "should be 1")
 
 
 

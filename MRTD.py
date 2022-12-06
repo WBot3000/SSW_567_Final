@@ -77,16 +77,16 @@ def getNumericalValue(i):
         else:
             return 0
 
-# def calculateCheck(lst):
-#     weights = [7, 3, 1]
-#     weightIdx = 0
-#     total = 0
+def calculateCheck(lst):
+    weights = [7, 3, 1]
+    weightIdx = 0
+    total = 0
     
-#     for i in lst:
-#         numVal = getNumericalValue(i)
-#         total += (numVal * weights[weightIdx])
-#         weightIdx = (weightIdx + 1) % len(weights)
-#     return total % 10
+    for i in lst:
+        numVal = getNumericalValue(i)
+        total += (numVal * weights[weightIdx])
+        weightIdx = (weightIdx + 1) % len(weights)
+    return total % 10
 
 
 
