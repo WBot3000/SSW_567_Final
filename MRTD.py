@@ -2,6 +2,7 @@ PASSPORT_LENGTH = 9
 COUNTRY_CODE_LENGTH = 3
 DATE_LENGTH = 6
 SEX_LENGTH = 1
+LINE_LENGTH = 44
 #PERSONAL_NUMBER_LENGTH = 9 #Commented out b/c I think this is actually variable
 
 #TODO: Should checks be stored as strings or integers?
@@ -23,10 +24,7 @@ class TravelData:
     #personalNo
     #personalNoCheck
 
-    def __init__():
-        pass
-
-    def __init__(dT, iC, lN, fN, mN, passN, pC, cC, b, bC, s, eD, eC, perN, perC):
+    def __init__(self, dT=None, iC=None, lN=None, fN=None, mN=None, passN=None, pC=None, cC=None, b=None, bC=None, s=None, eD=None, eC=None, perN=None, perC=None):
         docType = dT
         issuingCountry = iC
         lastName = lN
@@ -43,6 +41,20 @@ class TravelData:
         personalNo = perN
         personalNoCheck = perC
 
+    def printData(self): #Check digits are in parenthesis next to the appropriate field
+        print("Document Type: " + self.docType)
+        print("Issuing Country: " + self.issuingCountry)
+        print("Last Name: " + self.lastName)
+        print("First Name: " + self.firstName)
+        print("Middle Name: " + self.middleName)
+        print("Passport Number: " + self.passportNo + " (" + self.passportCheck + ")")
+        print("Country Code: " + self.countryCode)
+        print("Birthday: " + self.birthday + " (" + self.birthdayCheck + ")")
+        print("Sex: " + self.sex)
+        print("Expiration Date: " + self.expirationDate + " (" + self.expirationCheck + ")")
+        print("Personal Number: " + self.personalNo + " (" + self.personalNoCheck + ")")
+    
+
 #TODO: Should this have a reference to the TravelData it checks?
 class TravelDataError:
     #Fields (all booleans)
@@ -51,22 +63,41 @@ class TravelDataError:
     #expirationError
     #personalError
 
-    def __init__(): #Assume that there are no errors to begin with
+    def __init__(self): #Assume that there are no errors to begin with
         passportError = False
         birthdayError = False
         expirationError = False
         personalError = False
 
+    def report(self):
+        errorsFound = False
+        if(self.birthdayError):
+            print("Error in Birthday Check Digit")
+            errorsFound = True
+        if(self.passportError):
+            print("Error in Passport Check Digit")
+            errorsFound = True
+        if(self.expirationError):
+            print("Error in Expiration Date Check Digit")
+            errorsFound = True
+        if(self.personalError):
+            print("Error in Personal Number Check Digit")
+            errorsFound = True
+        if(not errorsFound):
+            print("No errors found")
+
 
 #Functions
 #General
-def getNumericalValue(char):
-    if len(char) != 1:
-        return -1 #TODO: Might want to throw an exception instead
-    elif (char >= 'A' and char <= 'Z'):
-        return ord(char) - 55 #Because ord(A) = 65, and A = 10 in example
-    else:
-        return 0
+def getNumericalValue(i):
+    try:
+        int(i)
+        return int(i)
+    except ValueError:
+        if (str(i) >= 'A' and str(i) <= 'Z'):
+            return int(ord(str(i)) - 55)
+        else:
+            return 0
 
 #TODO: Should this return a string instead?
 def calculateCheck(field):
@@ -92,9 +123,31 @@ def decodeMRZ(line1, line2):
     #TODO
     travelData = TravelData()
     linePos = 0
-    currentString = ""
     #Reading Line 1
     #TODO
+    currentString = "" #Used for variable sized strings
+    travelData.docType = line1[linePos:linePos+1]
+    linePos += 2 #To account for <
+    travelData.issuingCountry = line1[linePos:linePos+3]
+    linePos +=3
+    while(line1[linePos] != "<"): #Parsing last name
+        currentString += line1[linePos]
+        linePos += 1
+    travelData.lastName = currentString
+    linePos += 2 #Skip the second < and go straight to the first letter of the first name
+    currentString = "" #So you can use it again for the other fields
+    while(line1[linePos] != "<"):
+        currentString += line1[linePos]
+        linePos += 1
+    travelData.firstName = currentString
+    linePos += 1
+    currentString = ""
+    while(line1[linePos] != "<"):
+        currentString += line1[linePos]
+        linePos += 1
+    travelData.middleName = currentString
+    currentString = "" #Not necessary, just used to keep pattern
+    
 
     #Reading Line 2
     linePos = 0
@@ -128,14 +181,23 @@ def getTravelDataFromDB():
     
 def encodeMRZ():
     #TODO
-    return
+    data = getTravelDataFromDB() #What needs to be mocked in test cases, this implementation expects a TravelData object
+    #Encoding Line 1
+    line1 = data.docType + "<" + data.issuingCountry + data.lastName + "<<" + data.firstName + "<" + data.middleName
+    while(len(line1) < LINE_LENGTH):
+        line1 += "<"
+
+    #Encoding Line 2
+    line2 = data.passportNo + data.passportCheck + data.countryCode + data.birthday + data.birthdayCheck + data.sex + data.expirationDate + data.expirationCheck + data.personalNumber + data.personalCheck
+    #NOTE: Padding is stored in the personal number according to decodeMRZ, so none added here
+    return (line1, line2)
 
 
 #Requirement 4
 def checkMismatches(travelData):
     #TODO
     errors = TravelDataError()
-    if (int(travelData.passportCheck) == calculateCheck(travelData.passport)):
+    if (int(travelData.passportCheck) == calculateCheck(travelData.passportNo)):
         errors.passportError = True
     if (int(travelData.birthdayCheck) == calculateCheck(travelData.birthday)):
         errors.birthdayError = True
