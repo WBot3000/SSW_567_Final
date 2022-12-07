@@ -1,12 +1,12 @@
 #TODO: Define input, mocks, and test cases
 import unittest
-from MRTD import checkMismatches, getTravelDataFromDB, decodeMRZ, scanMRZ, calculateCheck,getNumericalValue
+from MRTD import TravelData, TravelDataError, checkMismatches, getTravelDataFromDB, decodeMRZ, scanMRZ, calculateCheck, getNumericalValue
 
 
 testData = ['A','B','2','1','3','4','<','<','<']
 testData2 = ['L','8','9','8','9','0','2','C','3']
-testData3 = ['U','T','O','7','4','0','8','1','2']
-testData4 = ['F','1','2','0','4','1','5']
+testData3 = ['7','4','0','8','1','2']
+testData4 = ['1','2','0','4','1','5']
 testData5 = ['Z','E','1','8','4','2','2','6','B']
 
 class TestMRTD(unittest.TestCase):
@@ -20,11 +20,9 @@ class TestMRTD(unittest.TestCase):
     def testCalculateCheck(self):
         self.assertEqual(calculateCheck(testData), 5, "should be 5")
         self.assertEqual(calculateCheck(testData2), 6, "should be 6")
-        self.assertEqual(calculateCheck(testData5), 1, "should be 1")
-        
-        #Failed
         self.assertEqual(calculateCheck(testData3), 2, "should be 2")
         self.assertEqual(calculateCheck(testData4), 9, "should be 9")
+        self.assertEqual(calculateCheck(testData5), 1, "should be 1")
 
 
 

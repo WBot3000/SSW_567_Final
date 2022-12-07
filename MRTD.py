@@ -71,11 +71,11 @@ class TravelDataError:
 
     def report(self):
         errorsFound = False
-        if(self.birthdayError):
-            print("Error in Birthday Check Digit")
-            errorsFound = True
         if(self.passportError):
             print("Error in Passport Check Digit")
+            errorsFound = True
+        if(self.birthdayError):
+            print("Error in Birthday Check Digit")
             errorsFound = True
         if(self.expirationError):
             print("Error in Expiration Date Check Digit")
@@ -109,25 +109,11 @@ def calculateCheck(lst):
         total += (numVal * weights[weightIdx])
         weightIdx = (weightIdx + 1) % len(weights)
     return total % 10
-
-
-
-
-#TODO: Should this return a string instead?
-# def calculateCheck(field):
-#     weights = [7, 3, 1]
-#     weightIdx = 0
-#     total = 0
-#     for char in field:
-#         numVal = getNumericalValue(char)
-#         total += (numVal * weights[weightIdx])
-#         weightIdx = (weightIdx + 1) % len(weights)
-#     return total % 10
     
 
 #Requirement 1
 def scanMRZ():
-    #Empty function
+    #Empty function, needs to be mocked in test cases
     return
 
 
@@ -211,12 +197,31 @@ def encodeMRZ():
 def checkMismatches(travelData):
     #TODO
     errors = TravelDataError()
-    if (int(travelData.passportCheck) == calculateCheck(travelData.passportNo)):
+    if (int(travelData.passportCheck) != calculateCheck(travelData.passportNo)):
         errors.passportError = True
-    if (int(travelData.birthdayCheck) == calculateCheck(travelData.birthday)):
+    else:
+        errors.passportError = False
+
+    if (int(travelData.birthdayCheck) != calculateCheck(travelData.birthday)):
         errors.birthdayError = True
-    if (int(travelData.expirationCheck) == calculateCheck(travelData.expirationDate)):
+    else:
+        errors.birthdayError = False
+
+    if (int(travelData.expirationCheck) != calculateCheck(travelData.expirationDate)):
         errors.expirationError = True
-    if (int(travelData.personalNoCheck) == calculateCheck(travelData.personalNo)):
+    else:
+        errors.expirationError = False
+
+    if (int(travelData.personalNoCheck) != calculateCheck(travelData.personalNo)):
         errors.personalError = True
+    else:
+        errors.personalError = False
     return errors
+
+def quickRun():
+    line1 = "P<UTOERIKSSON<<ANNA<MARIA<<<<<<<<<<<<<<<<<<<"
+    line2 = "L898902C36UTO7408122F1204159ZE184226B<<<<<<1"
+    data = decodeMRZ(line1, line2)
+    data.printData()
+    errors = checkMismatches(data)
+    errors.report()
