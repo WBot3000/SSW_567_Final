@@ -25,21 +25,21 @@ class TravelData:
     #personalNoCheck
 
     def __init__(self, dT=None, iC=None, lN=None, fN=None, mN=None, passN=None, pC=None, cC=None, b=None, bC=None, s=None, eD=None, eC=None, perN=None, perC=None):
-        docType = dT
-        issuingCountry = iC
-        lastName = lN
-        firstName = fN
-        middleName = mN
-        passportNo = passN
-        passportCheck = pC
-        countryCode = cC
-        birthday = b
-        birthdayCheck = bC
-        sex = s
-        expirationDate = eD
-        expirationCheck = eC
-        personalNo = perN
-        personalNoCheck = perC
+        self.docType = dT
+        self.issuingCountry = iC
+        self.lastName = lN
+        self.firstName = fN
+        self.middleName = mN
+        self.passportNo = passN
+        self.passportCheck = pC
+        self.countryCode = cC
+        self.birthday = b
+        self.birthdayCheck = bC
+        self.sex = s
+        self.expirationDate = eD
+        self.expirationCheck = eC
+        self.personalNo = perN
+        self.personalNoCheck = perC
 
     def printData(self): #Check digits are in parenthesis next to the appropriate field
         print("Document Type: " + self.docType)
@@ -53,7 +53,8 @@ class TravelData:
         print("Sex: " + self.sex)
         print("Expiration Date: " + self.expirationDate + " (" + self.expirationCheck + ")")
         print("Personal Number: " + self.personalNo + " (" + self.personalNoCheck + ")")
-    
+
+
 
 #TODO: Should this have a reference to the TravelData it checks?
 class TravelDataError:
@@ -63,11 +64,11 @@ class TravelDataError:
     #expirationError
     #personalError
 
-    def __init__(self): #Assume that there are no errors to begin with
-        passportError = False
-        birthdayError = False
-        expirationError = False
-        personalError = False
+    def __init__(self, passE=False, bE=False, eE=False, perE=False): #Assume that there are no errors to begin with
+        self.passportError = passE
+        self.birthdayError = bE
+        self.expirationError = eE
+        self.personalError = perE
 
     def report(self):
         errorsFound = False
@@ -113,7 +114,7 @@ def calculateCheck(lst):
 
 #Requirement 1
 def scanMRZ():
-    #Empty function, needs to be mocked in test cases
+    #Empty function
     return
 
 
@@ -175,20 +176,20 @@ def decodeMRZ(line1, line2):
 
 
 #Requirement 3
-def getTravelDataFromDB():
-    #Empty function
+def getTravelDataFromDB(personalNo):
+    #Empty function, needs to be mocked
     return
     
-def encodeMRZ():
+def encodeMRZ(personalNo):
     #TODO
-    data = getTravelDataFromDB() #What needs to be mocked in test cases, this implementation expects a TravelData object
+    data = getTravelDataFromDB(personalNo) #What needs to be mocked in test cases, this implementation expects a TravelData object
     #Encoding Line 1
     line1 = data.docType + "<" + data.issuingCountry + data.lastName + "<<" + data.firstName + "<" + data.middleName
     while(len(line1) < LINE_LENGTH):
         line1 += "<"
 
     #Encoding Line 2
-    line2 = data.passportNo + data.passportCheck + data.countryCode + data.birthday + data.birthdayCheck + data.sex + data.expirationDate + data.expirationCheck + data.personalNumber + data.personalCheck
+    line2 = data.passportNo + data.passportCheck + data.countryCode + data.birthday + data.birthdayCheck + data.sex + data.expirationDate + data.expirationCheck + data.personalNo + data.personalNoCheck
     #NOTE: Padding is stored in the personal number according to decodeMRZ, so none added here
     return (line1, line2)
 
@@ -225,3 +226,4 @@ def quickRun():
     data.printData()
     errors = checkMismatches(data)
     errors.report()
+
