@@ -114,14 +114,15 @@ def calculateCheck(lst):
 
 #Requirement 1
 def scanMRZ():
-    #Empty function
+    #Empty function, needs to be mocked
     return
 
 
 #Requirement 2
 #Each line seems to be 44 characters
-def decodeMRZ(line1, line2):
+def decodeMRZ():
     #TODO
+    (line1, line2) = scanMRZ()
     travelData = TravelData()
     linePos = 0
     #Reading Line 1

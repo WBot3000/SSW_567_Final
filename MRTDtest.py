@@ -38,7 +38,15 @@ def checkDataEquality(d1, d2):
             return False
     return True
 
+def scanAnna():
+    return (annaLine1, annaLine2)
 
+def scanGeorge():
+    return (georgeLine1, georgeLine2)
+
+def scanWill():
+    return (willLine1, willLine2)
+    
 def mockDBFunc(personalNo):
     if(personalNo == "ZE184226B<<<<<<"):
         return annaData
@@ -63,10 +71,17 @@ class TestMRTD(unittest.TestCase):
         self.assertEqual(calculateCheck(testData4), 9, "should be 9")
         self.assertEqual(calculateCheck(testData5), 1, "should be 1")
 
-    def testDecodeMRZ(self):
-        self.assertTrue(checkDataEquality(decodeMRZ(annaLine1, annaLine2), annaData))
-        self.assertTrue(checkDataEquality(decodeMRZ(georgeLine1, georgeLine2), georgeData))
-        self.assertTrue(checkDataEquality(decodeMRZ(willLine1, willLine2), willData))
+    @mock.patch("MRTD.scanMRZ", side_effect = scanAnna)
+    def testDecodeMRZ(self, mockScan):
+        self.assertTrue(checkDataEquality(decodeMRZ(), annaData))
+
+    @mock.patch("MRTD.scanMRZ", side_effect = scanGeorge)
+    def testDecodeMRZ2(self, mockScan):
+        self.assertTrue(checkDataEquality(decodeMRZ(), georgeData))
+
+    @mock.patch("MRTD.scanMRZ", side_effect = scanWill)
+    def testDecodeMRZ3(self, mockScan):
+        self.assertTrue(checkDataEquality(decodeMRZ(), willData))
 
 
     @mock.patch("MRTD.getTravelDataFromDB", side_effect = mockDBFunc)
