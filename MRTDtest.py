@@ -46,6 +46,12 @@ def scanGeorge():
 
 def scanWill():
     return (willLine1, willLine2)
+
+def scanTooMuch():
+    return(annaLine1, tooLongLine)
+
+def scanTooLittle():
+    return (tooShortLine, annaLine2)
     
 def mockDBFunc(personalNo):
     if(personalNo == "ZE184226B<<<<<<"):
@@ -65,36 +71,45 @@ class TestMRTD(unittest.TestCase):
         self.assertEqual(getNumericalValue("<"), 0, "< should be 0")
         
     def testCalculateCheck(self):
-        self.assertEqual(calculateCheck(testData), 5, "should be 5")
-        self.assertEqual(calculateCheck(testData2), 6, "should be 6")
-        self.assertEqual(calculateCheck(testData3), 2, "should be 2")
-        self.assertEqual(calculateCheck(testData4), 9, "should be 9")
-        self.assertEqual(calculateCheck(testData5), 1, "should be 1")
+        self.assertEqual(calculateCheck(testData), 5, "Should be 5")
+        self.assertEqual(calculateCheck(testData2), 6, "Should be 6")
+        self.assertEqual(calculateCheck(testData3), 2, "Should be 2")
+        self.assertEqual(calculateCheck(testData4), 9, "Should be 9")
+        self.assertEqual(calculateCheck(testData5), 1, "Should be 1")
 
     @mock.patch("MRTD.scanMRZ", side_effect = scanAnna)
     def testDecodeMRZ(self, mockScan):
-        self.assertTrue(checkDataEquality(decodeMRZ(), annaData))
+        self.assertTrue(checkDataEquality(decodeMRZ(), annaData), "Data for Anna not being decoded correctly")
 
     @mock.patch("MRTD.scanMRZ", side_effect = scanGeorge)
     def testDecodeMRZ2(self, mockScan):
-        self.assertTrue(checkDataEquality(decodeMRZ(), georgeData))
+        self.assertTrue(checkDataEquality(decodeMRZ(), georgeData), "Data for George not being decoded correctly")
 
     @mock.patch("MRTD.scanMRZ", side_effect = scanWill)
     def testDecodeMRZ3(self, mockScan):
-        self.assertTrue(checkDataEquality(decodeMRZ(), willData))
+        self.assertTrue(checkDataEquality(decodeMRZ(), willData), "Data for William not being decoded correctly")
 
+    @mock.patch("MRTD.scanMRZ", side_effect = scanTooMuch)
+    def testDecodeMRZ4(self, mockScan):
+        with self.assertRaises(Exception):
+            decodeMRZ()
+
+    @mock.patch("MRTD.scanMRZ", side_effect = scanTooLittle)
+    def testDecodeMRZ5(self, mockScan):
+        with self.assertRaises(Exception):
+            decodeMRZ()
 
     @mock.patch("MRTD.getTravelDataFromDB", side_effect = mockDBFunc)
     def testEncodeMRZ(self, mockData):
-        self.assertEqual(encodeMRZ("ZE184226B<<<<<<"), (annaLine1, annaLine2))
-        self.assertEqual(encodeMRZ("EGROEG<<<<<<<<<"), (georgeLine1, georgeLine2))
-        self.assertEqual(encodeMRZ("WX123U22XIESAL<"), (willLine1, willLine2))
+        self.assertEqual(encodeMRZ("ZE184226B<<<<<<"), (annaLine1, annaLine2), "Data for Anna not being encoded properly")
+        self.assertEqual(encodeMRZ("EGROEG<<<<<<<<<"), (georgeLine1, georgeLine2), "Data for George not being encoded properly")
+        self.assertEqual(encodeMRZ("WX123U22XIESAL<"), (willLine1, willLine2), "Data for William not being encoded properly")
 
 
     def testCheckMismatches(self):
-        self.assertTrue(checkDataEquality(checkMismatches(annaData), annaCheck))
-        self.assertTrue(checkDataEquality(checkMismatches(georgeData), georgeCheck))
-        self.assertTrue(checkDataEquality(checkMismatches(willData), willCheck))
+        self.assertTrue(checkDataEquality(checkMismatches(annaData), annaCheck), "Improper errors calculated for Anna")
+        self.assertTrue(checkDataEquality(checkMismatches(georgeData), georgeCheck), "Improper errors calculated for George")
+        self.assertTrue(checkDataEquality(checkMismatches(willData), willCheck), "Improper errors calculated for William")
         
 
 if __name__ == '__main__':

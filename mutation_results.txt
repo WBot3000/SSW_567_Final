@@ -1,0 +1,2380 @@
+[*] Start mutation process:
+   - targets: MRTD
+   - tests: MRTDtest
+[*] 9 tests passed:
+   - MRTDtest [0.00100 s]
+[*] Start mutants generation and execution:
+   - [#   1] AOR MRTD: 
+--------------------------------------------------------------------------------
+   95:         int(i)
+   96:         return int(i)
+   97:     except ValueError:
+   98:         if (str(i) >= 'A' and str(i) <= 'Z'):
+-  99:             return int(ord(str(i)) - 55)
++  99:             return int(ord(str(i)) + 55)
+  100:         else:
+  101:             return 0
+  102: 
+  103: def calculateCheck(lst):
+--------------------------------------------------------------------------------
+[0.00199 s] killed by testGetNumericalValue (MRTDtest.TestMRTD)
+   - [#   2] AOR MRTD: 
+--------------------------------------------------------------------------------
+  106:     total = 0
+  107:     
+  108:     for i in lst:
+  109:         numVal = getNumericalValue(i)
+- 110:         total += numVal * weights[weightIdx]
++ 110:         total += numVal / weights[weightIdx]
+  111:         weightIdx = (weightIdx + 1) % len(weights)
+  112:     return total % 10
+  113: 
+  114: 
+--------------------------------------------------------------------------------
+[0.00000 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#   3] AOR MRTD: 
+--------------------------------------------------------------------------------
+  106:     total = 0
+  107:     
+  108:     for i in lst:
+  109:         numVal = getNumericalValue(i)
+- 110:         total += numVal * weights[weightIdx]
++ 110:         total += numVal // weights[weightIdx]
+  111:         weightIdx = (weightIdx + 1) % len(weights)
+  112:     return total % 10
+  113: 
+  114: 
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#   4] AOR MRTD: 
+--------------------------------------------------------------------------------
+  106:     total = 0
+  107:     
+  108:     for i in lst:
+  109:         numVal = getNumericalValue(i)
+- 110:         total += numVal * weights[weightIdx]
++ 110:         total += numVal ** weights[weightIdx]
+  111:         weightIdx = (weightIdx + 1) % len(weights)
+  112:     return total % 10
+  113: 
+  114: 
+--------------------------------------------------------------------------------
+[0.00163 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#   5] AOR MRTD: 
+--------------------------------------------------------------------------------
+  107:     
+  108:     for i in lst:
+  109:         numVal = getNumericalValue(i)
+  110:         total += numVal * weights[weightIdx]
+- 111:         weightIdx = (weightIdx + 1) % len(weights)
++ 111:         weightIdx = (weightIdx - 1) % len(weights)
+  112:     return total % 10
+  113: 
+  114: 
+  115: 
+--------------------------------------------------------------------------------
+[0.00000 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#   6] AOR MRTD: 
+--------------------------------------------------------------------------------
+  107:     
+  108:     for i in lst:
+  109:         numVal = getNumericalValue(i)
+  110:         total += numVal * weights[weightIdx]
+- 111:         weightIdx = (weightIdx + 1) % len(weights)
++ 111:         weightIdx = (weightIdx + 1) * len(weights)
+  112:     return total % 10
+  113: 
+  114: 
+  115: 
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#   7] AOR MRTD: 
+--------------------------------------------------------------------------------
+  108:     for i in lst:
+  109:         numVal = getNumericalValue(i)
+  110:         total += numVal * weights[weightIdx]
+  111:         weightIdx = (weightIdx + 1) % len(weights)
+- 112:     return total % 10
++ 112:     return total * 10
+  113: 
+  114: 
+  115: 
+  116: def scanMRZ():
+--------------------------------------------------------------------------------
+[0.00101 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#   8] AOR MRTD: 
+--------------------------------------------------------------------------------
+  123: def decodeMRZ():
+  124:     
+  125:     (line1, line2) = scanMRZ()
+  126:     if (len(line1) != LINE_LENGTH or len(line2) != LINE_LENGTH):
+- 127:         raise Exception(('Lines must both be ' + str(LINE_LENGTH)) + ' characters.')
++ 127:         raise Exception(('Lines must both be ' - str(LINE_LENGTH)) + ' characters.')
+  128:     travelData = TravelData()
+  129:     linePos = 0
+  130:     
+  131:     currentString = ''
+--------------------------------------------------------------------------------
+[0.00237 s] survived
+   - [#   9] AOR MRTD: 
+--------------------------------------------------------------------------------
+  123: def decodeMRZ():
+  124:     
+  125:     (line1, line2) = scanMRZ()
+  126:     if (len(line1) != LINE_LENGTH or len(line2) != LINE_LENGTH):
+- 127:         raise Exception(('Lines must both be ' + str(LINE_LENGTH)) + ' characters.')
++ 127:         raise Exception(('Lines must both be ' + str(LINE_LENGTH)) - ' characters.')
+  128:     travelData = TravelData()
+  129:     linePos = 0
+  130:     
+  131:     currentString = ''
+--------------------------------------------------------------------------------
+[0.00100 s] survived
+   - [#  10] AOR MRTD: 
+--------------------------------------------------------------------------------
+  128:     travelData = TravelData()
+  129:     linePos = 0
+  130:     
+  131:     currentString = ''
+- 132:     travelData.docType = line1[linePos:linePos + 1]
++ 132:     travelData.docType = line1[linePos:linePos - 1]
+  133:     linePos += 2
+  134:     travelData.issuingCountry = line1[linePos:linePos + 3]
+  135:     linePos += 3
+  136:     while line1[linePos] != '<':
+--------------------------------------------------------------------------------
+[0.00819 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  11] AOR MRTD: 
+--------------------------------------------------------------------------------
+  130:     
+  131:     currentString = ''
+  132:     travelData.docType = line1[linePos:linePos + 1]
+  133:     linePos += 2
+- 134:     travelData.issuingCountry = line1[linePos:linePos + 3]
++ 134:     travelData.issuingCountry = line1[linePos:linePos - 3]
+  135:     linePos += 3
+  136:     while line1[linePos] != '<':
+  137:         currentString += line1[linePos]
+  138:         linePos += 1
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  12] AOR MRTD: 
+--------------------------------------------------------------------------------
+  155:     
+  156:     linePos = 0
+  157:     travelData.passportNo = line2[linePos:PASSPORT_LENGTH]
+  158:     linePos += PASSPORT_LENGTH
+- 159:     travelData.passportCheck = line2[linePos:linePos + 1]
++ 159:     travelData.passportCheck = line2[linePos:linePos - 1]
+  160:     linePos += 1
+  161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
+  162:     linePos += COUNTRY_CODE_LENGTH
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  13] AOR MRTD: 
+--------------------------------------------------------------------------------
+  157:     travelData.passportNo = line2[linePos:PASSPORT_LENGTH]
+  158:     linePos += PASSPORT_LENGTH
+  159:     travelData.passportCheck = line2[linePos:linePos + 1]
+  160:     linePos += 1
+- 161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
++ 161:     travelData.countryCode = line2[linePos:linePos - COUNTRY_CODE_LENGTH]
+  162:     linePos += COUNTRY_CODE_LENGTH
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+  164:     linePos += DATE_LENGTH
+  165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  14] AOR MRTD: 
+--------------------------------------------------------------------------------
+  159:     travelData.passportCheck = line2[linePos:linePos + 1]
+  160:     linePos += 1
+  161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
+  162:     linePos += COUNTRY_CODE_LENGTH
+- 163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
++ 163:     travelData.birthday = line2[linePos:linePos - DATE_LENGTH]
+  164:     linePos += DATE_LENGTH
+  165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
+  166:     linePos += 1
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  15] AOR MRTD: 
+--------------------------------------------------------------------------------
+  161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
+  162:     linePos += COUNTRY_CODE_LENGTH
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+  164:     linePos += DATE_LENGTH
+- 165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
++ 165:     travelData.birthdayCheck = line2[linePos:linePos - 1]
+  166:     linePos += 1
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+  168:     linePos += 1
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  16] AOR MRTD: 
+--------------------------------------------------------------------------------
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+  164:     linePos += DATE_LENGTH
+  165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
+  166:     linePos += 1
+- 167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
++ 167:     travelData.sex = line2[linePos:linePos - SEX_LENGTH]
+  168:     linePos += 1
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+  171:     travelData.expirationCheck = line2[linePos:linePos + 1]
+--------------------------------------------------------------------------------
+[0.00111 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  17] AOR MRTD: 
+--------------------------------------------------------------------------------
+  165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
+  166:     linePos += 1
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+  168:     linePos += 1
+- 169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
++ 169:     travelData.expirationDate = line2[linePos:linePos - DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+  171:     travelData.expirationCheck = line2[linePos:linePos + 1]
+  172:     linePos += 1
+  173:     travelData.personalNo = line2[linePos:len(line2) - 1]
+--------------------------------------------------------------------------------
+[0.00101 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  18] AOR MRTD: 
+--------------------------------------------------------------------------------
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+  168:     linePos += 1
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+- 171:     travelData.expirationCheck = line2[linePos:linePos + 1]
++ 171:     travelData.expirationCheck = line2[linePos:linePos - 1]
+  172:     linePos += 1
+  173:     travelData.personalNo = line2[linePos:len(line2) - 1]
+  174:     linePos = len(line2) - 1
+  175:     travelData.personalNoCheck = line2[linePos]
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  19] AOR MRTD: 
+--------------------------------------------------------------------------------
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+  171:     travelData.expirationCheck = line2[linePos:linePos + 1]
+  172:     linePos += 1
+- 173:     travelData.personalNo = line2[linePos:len(line2) - 1]
++ 173:     travelData.personalNo = line2[linePos:len(line2) + 1]
+  174:     linePos = len(line2) - 1
+  175:     travelData.personalNoCheck = line2[linePos]
+  176:     linePos += 1
+  177:     return travelData
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  20] AOR MRTD: 
+--------------------------------------------------------------------------------
+  170:     linePos += DATE_LENGTH
+  171:     travelData.expirationCheck = line2[linePos:linePos + 1]
+  172:     linePos += 1
+  173:     travelData.personalNo = line2[linePos:len(line2) - 1]
+- 174:     linePos = len(line2) - 1
++ 174:     linePos = len(line2) + 1
+  175:     travelData.personalNoCheck = line2[linePos]
+  176:     linePos += 1
+  177:     return travelData
+  178: 
+--------------------------------------------------------------------------------
+[0.00096 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  21] AOR MRTD: 
+--------------------------------------------------------------------------------
+  185: 
+  186: def encodeMRZ(personalNo):
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+- 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
++ 189:     line1 = ((((((data.docType - '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+--------------------------------------------------------------------------------
+[0.00139 s] incompetent
+   - [#  22] AOR MRTD: 
+--------------------------------------------------------------------------------
+  185: 
+  186: def encodeMRZ(personalNo):
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+- 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
++ 189:     line1 = ((((((data.docType + '<') - data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+--------------------------------------------------------------------------------
+[0.00200 s] incompetent
+   - [#  23] AOR MRTD: 
+--------------------------------------------------------------------------------
+  185: 
+  186: def encodeMRZ(personalNo):
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+- 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
++ 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) - data.lastName) + '<<') + data.firstName) + '<') + data.middleName
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+--------------------------------------------------------------------------------
+[0.00199 s] incompetent
+   - [#  24] AOR MRTD: 
+--------------------------------------------------------------------------------
+  185: 
+  186: def encodeMRZ(personalNo):
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+- 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
++ 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) - '<<') + data.firstName) + '<') + data.middleName
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+--------------------------------------------------------------------------------
+[0.00100 s] incompetent
+   - [#  25] AOR MRTD: 
+--------------------------------------------------------------------------------
+  185: 
+  186: def encodeMRZ(personalNo):
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+- 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
++ 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') - data.firstName) + '<') + data.middleName
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+--------------------------------------------------------------------------------
+[0.00108 s] incompetent
+   - [#  26] AOR MRTD: 
+--------------------------------------------------------------------------------
+  185: 
+  186: def encodeMRZ(personalNo):
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+- 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
++ 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) - '<') + data.middleName
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+--------------------------------------------------------------------------------
+[0.00199 s] incompetent
+   - [#  27] AOR MRTD: 
+--------------------------------------------------------------------------------
+  185: 
+  186: def encodeMRZ(personalNo):
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+- 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
++ 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') - data.middleName
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+--------------------------------------------------------------------------------
+[0.00199 s] incompetent
+   - [#  28] AOR MRTD: 
+--------------------------------------------------------------------------------
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+- 194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
++ 194:     line2 = ((((((((data.passportNo - data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
+  195:     
+  196:     return (line1, line2)
+  197: 
+  198: 
+--------------------------------------------------------------------------------
+[0.00199 s] incompetent
+   - [#  29] AOR MRTD: 
+--------------------------------------------------------------------------------
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+- 194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
++ 194:     line2 = ((((((((data.passportNo + data.passportCheck) - data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
+  195:     
+  196:     return (line1, line2)
+  197: 
+  198: 
+--------------------------------------------------------------------------------
+[0.00099 s] incompetent
+   - [#  30] AOR MRTD: 
+--------------------------------------------------------------------------------
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+- 194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
++ 194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) - data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
+  195:     
+  196:     return (line1, line2)
+  197: 
+  198: 
+--------------------------------------------------------------------------------
+[0.00100 s] incompetent
+   - [#  31] AOR MRTD: 
+--------------------------------------------------------------------------------
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+- 194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
++ 194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) - data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
+  195:     
+  196:     return (line1, line2)
+  197: 
+  198: 
+--------------------------------------------------------------------------------
+[0.00101 s] incompetent
+   - [#  32] AOR MRTD: 
+--------------------------------------------------------------------------------
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+- 194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
++ 194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) - data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
+  195:     
+  196:     return (line1, line2)
+  197: 
+  198: 
+--------------------------------------------------------------------------------
+[0.00200 s] incompetent
+   - [#  33] AOR MRTD: 
+--------------------------------------------------------------------------------
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+- 194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
++ 194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) - data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
+  195:     
+  196:     return (line1, line2)
+  197: 
+  198: 
+--------------------------------------------------------------------------------
+[0.00242 s] incompetent
+   - [#  34] AOR MRTD: 
+--------------------------------------------------------------------------------
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+- 194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
++ 194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) - data.expirationCheck) + data.personalNo) + data.personalNoCheck
+  195:     
+  196:     return (line1, line2)
+  197: 
+  198: 
+--------------------------------------------------------------------------------
+[0.00201 s] incompetent
+   - [#  35] AOR MRTD: 
+--------------------------------------------------------------------------------
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+- 194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
++ 194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) - data.personalNo) + data.personalNoCheck
+  195:     
+  196:     return (line1, line2)
+  197: 
+  198: 
+--------------------------------------------------------------------------------
+[0.00100 s] incompetent
+   - [#  36] AOR MRTD: 
+--------------------------------------------------------------------------------
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+- 194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
++ 194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) - data.personalNoCheck
+  195:     
+  196:     return (line1, line2)
+  197: 
+  198: 
+--------------------------------------------------------------------------------
+[0.00100 s] incompetent
+   - [#  37] ASR MRTD: 
+--------------------------------------------------------------------------------
+  106:     total = 0
+  107:     
+  108:     for i in lst:
+  109:         numVal = getNumericalValue(i)
+- 110:         total += numVal * weights[weightIdx]
++ 110:         total -= numVal * weights[weightIdx]
+  111:         weightIdx = (weightIdx + 1) % len(weights)
+  112:     return total % 10
+  113: 
+  114: 
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#  38] ASR MRTD: 
+--------------------------------------------------------------------------------
+  129:     linePos = 0
+  130:     
+  131:     currentString = ''
+  132:     travelData.docType = line1[linePos:linePos + 1]
+- 133:     linePos += 2
++ 133:     linePos -= 2
+  134:     travelData.issuingCountry = line1[linePos:linePos + 3]
+  135:     linePos += 3
+  136:     while line1[linePos] != '<':
+  137:         currentString += line1[linePos]
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  39] ASR MRTD: 
+--------------------------------------------------------------------------------
+  131:     currentString = ''
+  132:     travelData.docType = line1[linePos:linePos + 1]
+  133:     linePos += 2
+  134:     travelData.issuingCountry = line1[linePos:linePos + 3]
+- 135:     linePos += 3
++ 135:     linePos -= 3
+  136:     while line1[linePos] != '<':
+  137:         currentString += line1[linePos]
+  138:         linePos += 1
+  139:     travelData.lastName = currentString
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  40] ASR MRTD: 
+--------------------------------------------------------------------------------
+  133:     linePos += 2
+  134:     travelData.issuingCountry = line1[linePos:linePos + 3]
+  135:     linePos += 3
+  136:     while line1[linePos] != '<':
+- 137:         currentString += line1[linePos]
++ 137:         currentString -= line1[linePos]
+  138:         linePos += 1
+  139:     travelData.lastName = currentString
+  140:     linePos += 2
+  141:     currentString = ''
+--------------------------------------------------------------------------------
+[0.00100 s] incompetent
+   - [#  41] ASR MRTD: 
+--------------------------------------------------------------------------------
+  134:     travelData.issuingCountry = line1[linePos:linePos + 3]
+  135:     linePos += 3
+  136:     while line1[linePos] != '<':
+  137:         currentString += line1[linePos]
+- 138:         linePos += 1
++ 138:         linePos -= 1
+  139:     travelData.lastName = currentString
+  140:     linePos += 2
+  141:     currentString = ''
+  142:     while line1[linePos] != '<':
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  42] ASR MRTD: 
+--------------------------------------------------------------------------------
+  136:     while line1[linePos] != '<':
+  137:         currentString += line1[linePos]
+  138:         linePos += 1
+  139:     travelData.lastName = currentString
+- 140:     linePos += 2
++ 140:     linePos -= 2
+  141:     currentString = ''
+  142:     while line1[linePos] != '<':
+  143:         currentString += line1[linePos]
+  144:         linePos += 1
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  43] ASR MRTD: 
+--------------------------------------------------------------------------------
+  139:     travelData.lastName = currentString
+  140:     linePos += 2
+  141:     currentString = ''
+  142:     while line1[linePos] != '<':
+- 143:         currentString += line1[linePos]
++ 143:         currentString -= line1[linePos]
+  144:         linePos += 1
+  145:     travelData.firstName = currentString
+  146:     linePos += 1
+  147:     currentString = ''
+--------------------------------------------------------------------------------
+[0.00201 s] incompetent
+   - [#  44] ASR MRTD: 
+--------------------------------------------------------------------------------
+  140:     linePos += 2
+  141:     currentString = ''
+  142:     while line1[linePos] != '<':
+  143:         currentString += line1[linePos]
+- 144:         linePos += 1
++ 144:         linePos -= 1
+  145:     travelData.firstName = currentString
+  146:     linePos += 1
+  147:     currentString = ''
+  148:     while line1[linePos] != '<':
+--------------------------------------------------------------------------------
+[0.00101 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  45] ASR MRTD: 
+--------------------------------------------------------------------------------
+  142:     while line1[linePos] != '<':
+  143:         currentString += line1[linePos]
+  144:         linePos += 1
+  145:     travelData.firstName = currentString
+- 146:     linePos += 1
++ 146:     linePos -= 1
+  147:     currentString = ''
+  148:     while line1[linePos] != '<':
+  149:         currentString += line1[linePos]
+  150:         linePos += 1
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  46] ASR MRTD: 
+--------------------------------------------------------------------------------
+  145:     travelData.firstName = currentString
+  146:     linePos += 1
+  147:     currentString = ''
+  148:     while line1[linePos] != '<':
+- 149:         currentString += line1[linePos]
++ 149:         currentString -= line1[linePos]
+  150:         linePos += 1
+  151:     travelData.middleName = currentString
+  152:     currentString = ''
+  153:     
+--------------------------------------------------------------------------------
+[0.00199 s] incompetent
+   - [#  47] ASR MRTD: 
+--------------------------------------------------------------------------------
+  146:     linePos += 1
+  147:     currentString = ''
+  148:     while line1[linePos] != '<':
+  149:         currentString += line1[linePos]
+- 150:         linePos += 1
++ 150:         linePos -= 1
+  151:     travelData.middleName = currentString
+  152:     currentString = ''
+  153:     
+  154:     
+--------------------------------------------------------------------------------
+[0.00101 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  48] ASR MRTD: 
+--------------------------------------------------------------------------------
+  154:     
+  155:     
+  156:     linePos = 0
+  157:     travelData.passportNo = line2[linePos:PASSPORT_LENGTH]
+- 158:     linePos += PASSPORT_LENGTH
++ 158:     linePos -= PASSPORT_LENGTH
+  159:     travelData.passportCheck = line2[linePos:linePos + 1]
+  160:     linePos += 1
+  161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
+  162:     linePos += COUNTRY_CODE_LENGTH
+--------------------------------------------------------------------------------
+[0.00102 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  49] ASR MRTD: 
+--------------------------------------------------------------------------------
+  156:     linePos = 0
+  157:     travelData.passportNo = line2[linePos:PASSPORT_LENGTH]
+  158:     linePos += PASSPORT_LENGTH
+  159:     travelData.passportCheck = line2[linePos:linePos + 1]
+- 160:     linePos += 1
++ 160:     linePos -= 1
+  161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
+  162:     linePos += COUNTRY_CODE_LENGTH
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+  164:     linePos += DATE_LENGTH
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  50] ASR MRTD: 
+--------------------------------------------------------------------------------
+  158:     linePos += PASSPORT_LENGTH
+  159:     travelData.passportCheck = line2[linePos:linePos + 1]
+  160:     linePos += 1
+  161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
+- 162:     linePos += COUNTRY_CODE_LENGTH
++ 162:     linePos -= COUNTRY_CODE_LENGTH
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+  164:     linePos += DATE_LENGTH
+  165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
+  166:     linePos += 1
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  51] ASR MRTD: 
+--------------------------------------------------------------------------------
+  160:     linePos += 1
+  161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
+  162:     linePos += COUNTRY_CODE_LENGTH
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+- 164:     linePos += DATE_LENGTH
++ 164:     linePos -= DATE_LENGTH
+  165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
+  166:     linePos += 1
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+  168:     linePos += 1
+--------------------------------------------------------------------------------
+[0.00199 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  52] ASR MRTD: 
+--------------------------------------------------------------------------------
+  162:     linePos += COUNTRY_CODE_LENGTH
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+  164:     linePos += DATE_LENGTH
+  165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
+- 166:     linePos += 1
++ 166:     linePos -= 1
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+  168:     linePos += 1
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+--------------------------------------------------------------------------------
+[0.00128 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  53] ASR MRTD: 
+--------------------------------------------------------------------------------
+  164:     linePos += DATE_LENGTH
+  165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
+  166:     linePos += 1
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+- 168:     linePos += 1
++ 168:     linePos -= 1
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+  171:     travelData.expirationCheck = line2[linePos:linePos + 1]
+  172:     linePos += 1
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  54] ASR MRTD: 
+--------------------------------------------------------------------------------
+  166:     linePos += 1
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+  168:     linePos += 1
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+- 170:     linePos += DATE_LENGTH
++ 170:     linePos -= DATE_LENGTH
+  171:     travelData.expirationCheck = line2[linePos:linePos + 1]
+  172:     linePos += 1
+  173:     travelData.personalNo = line2[linePos:len(line2) - 1]
+  174:     linePos = len(line2) - 1
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  55] ASR MRTD: 
+--------------------------------------------------------------------------------
+  168:     linePos += 1
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+  171:     travelData.expirationCheck = line2[linePos:linePos + 1]
+- 172:     linePos += 1
++ 172:     linePos -= 1
+  173:     travelData.personalNo = line2[linePos:len(line2) - 1]
+  174:     linePos = len(line2) - 1
+  175:     travelData.personalNoCheck = line2[linePos]
+  176:     linePos += 1
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  56] ASR MRTD: 
+--------------------------------------------------------------------------------
+  172:     linePos += 1
+  173:     travelData.personalNo = line2[linePos:len(line2) - 1]
+  174:     linePos = len(line2) - 1
+  175:     travelData.personalNoCheck = line2[linePos]
+- 176:     linePos += 1
++ 176:     linePos -= 1
+  177:     return travelData
+  178: 
+  179: 
+  180: 
+--------------------------------------------------------------------------------
+[0.00100 s] survived
+   - [#  57] ASR MRTD: 
+--------------------------------------------------------------------------------
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+  189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
+  190:     while len(line1) < LINE_LENGTH:
+- 191:         line1 += '<'
++ 191:         line1 -= '<'
+  192:     
+  193:     
+  194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
+  195:     
+--------------------------------------------------------------------------------
+[0.00120 s] incompetent
+   - [#  58] COI MRTD: 
+--------------------------------------------------------------------------------
+   94:     try:
+   95:         int(i)
+   96:         return int(i)
+   97:     except ValueError:
+-  98:         if (str(i) >= 'A' and str(i) <= 'Z'):
++  98:         if not ((str(i) >= 'A' and str(i) <= 'Z')):
+   99:             return int(ord(str(i)) - 55)
+  100:         else:
+  101:             return 0
+  102: 
+--------------------------------------------------------------------------------
+[0.00000 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#  59] COI MRTD: 
+--------------------------------------------------------------------------------
+  122: 
+  123: def decodeMRZ():
+  124:     
+  125:     (line1, line2) = scanMRZ()
+- 126:     if (len(line1) != LINE_LENGTH or len(line2) != LINE_LENGTH):
++ 126:     if not ((len(line1) != LINE_LENGTH or len(line2) != LINE_LENGTH)):
+  127:         raise Exception(('Lines must both be ' + str(LINE_LENGTH)) + ' characters.')
+  128:     travelData = TravelData()
+  129:     linePos = 0
+  130:     
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  60] COI MRTD: 
+--------------------------------------------------------------------------------
+  132:     travelData.docType = line1[linePos:linePos + 1]
+  133:     linePos += 2
+  134:     travelData.issuingCountry = line1[linePos:linePos + 3]
+  135:     linePos += 3
+- 136:     while line1[linePos] != '<':
++ 136:     while not (line1[linePos] != '<'):
+  137:         currentString += line1[linePos]
+  138:         linePos += 1
+  139:     travelData.lastName = currentString
+  140:     linePos += 2
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  61] COI MRTD: 
+--------------------------------------------------------------------------------
+  138:         linePos += 1
+  139:     travelData.lastName = currentString
+  140:     linePos += 2
+  141:     currentString = ''
+- 142:     while line1[linePos] != '<':
++ 142:     while not (line1[linePos] != '<'):
+  143:         currentString += line1[linePos]
+  144:         linePos += 1
+  145:     travelData.firstName = currentString
+  146:     linePos += 1
+--------------------------------------------------------------------------------
+[0.00101 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  62] COI MRTD: 
+--------------------------------------------------------------------------------
+  144:         linePos += 1
+  145:     travelData.firstName = currentString
+  146:     linePos += 1
+  147:     currentString = ''
+- 148:     while line1[linePos] != '<':
++ 148:     while not (line1[linePos] != '<'):
+  149:         currentString += line1[linePos]
+  150:         linePos += 1
+  151:     travelData.middleName = currentString
+  152:     currentString = ''
+--------------------------------------------------------------------------------
+[0.00101 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  63] COI MRTD: 
+--------------------------------------------------------------------------------
+  186: def encodeMRZ(personalNo):
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+  189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
+- 190:     while len(line1) < LINE_LENGTH:
++ 190:     while not (len(line1) < LINE_LENGTH):
+  191:         line1 += '<'
+  192:     
+  193:     
+  194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
+--------------------------------------------------------------------------------
+[0.00200 s] killed by testEncodeMRZ (MRTDtest.TestMRTD)
+   - [#  64] COI MRTD: 
+--------------------------------------------------------------------------------
+  199: 
+  200: def checkMismatches(travelData):
+  201:     
+  202:     errors = TravelDataError()
+- 203:     if int(travelData.passportCheck) != calculateCheck(travelData.passportNo):
++ 203:     if not (int(travelData.passportCheck) != calculateCheck(travelData.passportNo)):
+  204:         errors.passportError = True
+  205:     else:
+  206:         errors.passportError = False
+  207:     
+--------------------------------------------------------------------------------
+[0.00101 s] killed by testCheckMismatches (MRTDtest.TestMRTD)
+   - [#  65] COI MRTD: 
+--------------------------------------------------------------------------------
+  204:         errors.passportError = True
+  205:     else:
+  206:         errors.passportError = False
+  207:     
+- 208:     if int(travelData.birthdayCheck) != calculateCheck(travelData.birthday):
++ 208:     if not (int(travelData.birthdayCheck) != calculateCheck(travelData.birthday)):
+  209:         errors.birthdayError = True
+  210:     else:
+  211:         errors.birthdayError = False
+  212:     
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testCheckMismatches (MRTDtest.TestMRTD)
+   - [#  66] COI MRTD: 
+--------------------------------------------------------------------------------
+  209:         errors.birthdayError = True
+  210:     else:
+  211:         errors.birthdayError = False
+  212:     
+- 213:     if int(travelData.expirationCheck) != calculateCheck(travelData.expirationDate):
++ 213:     if not (int(travelData.expirationCheck) != calculateCheck(travelData.expirationDate)):
+  214:         errors.expirationError = True
+  215:     else:
+  216:         errors.expirationError = False
+  217:     
+--------------------------------------------------------------------------------
+[0.00101 s] killed by testCheckMismatches (MRTDtest.TestMRTD)
+   - [#  67] COI MRTD: 
+--------------------------------------------------------------------------------
+  214:         errors.expirationError = True
+  215:     else:
+  216:         errors.expirationError = False
+  217:     
+- 218:     if int(travelData.personalNoCheck) != calculateCheck(travelData.personalNo):
++ 218:     if not (int(travelData.personalNoCheck) != calculateCheck(travelData.personalNo)):
+  219:         errors.personalError = True
+  220:     else:
+  221:         errors.personalError = False
+  222:     return errors
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testCheckMismatches (MRTDtest.TestMRTD)
+   - [#  68] CRP MRTD: 
+--------------------------------------------------------------------------------
+-   1: PASSPORT_LENGTH = 9
++   1: PASSPORT_LENGTH = 10
+    2: COUNTRY_CODE_LENGTH = 3
+    3: DATE_LENGTH = 6
+    4: SEX_LENGTH = 1
+    5: LINE_LENGTH = 44
+--------------------------------------------------------------------------------
+[0.00153 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  69] CRP MRTD: 
+--------------------------------------------------------------------------------
+    1: PASSPORT_LENGTH = 9
+-   2: COUNTRY_CODE_LENGTH = 3
++   2: COUNTRY_CODE_LENGTH = 4
+    3: DATE_LENGTH = 6
+    4: SEX_LENGTH = 1
+    5: LINE_LENGTH = 44
+    6: 
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  70] CRP MRTD: 
+--------------------------------------------------------------------------------
+    1: PASSPORT_LENGTH = 9
+    2: COUNTRY_CODE_LENGTH = 3
+-   3: DATE_LENGTH = 6
++   3: DATE_LENGTH = 7
+    4: SEX_LENGTH = 1
+    5: LINE_LENGTH = 44
+    6: 
+    7: 
+--------------------------------------------------------------------------------
+[0.00101 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  71] CRP MRTD: 
+--------------------------------------------------------------------------------
+    1: PASSPORT_LENGTH = 9
+    2: COUNTRY_CODE_LENGTH = 3
+    3: DATE_LENGTH = 6
+-   4: SEX_LENGTH = 1
++   4: SEX_LENGTH = 2
+    5: LINE_LENGTH = 44
+    6: 
+    7: 
+    8: 
+--------------------------------------------------------------------------------
+[0.00101 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  72] CRP MRTD: 
+--------------------------------------------------------------------------------
+    1: PASSPORT_LENGTH = 9
+    2: COUNTRY_CODE_LENGTH = 3
+    3: DATE_LENGTH = 6
+    4: SEX_LENGTH = 1
+-   5: LINE_LENGTH = 44
++   5: LINE_LENGTH = 45
+    6: 
+    7: 
+    8: 
+    9: class TravelData:
+--------------------------------------------------------------------------------
+[0.00200 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  73] CRP MRTD: 
+--------------------------------------------------------------------------------
+   94:     try:
+   95:         int(i)
+   96:         return int(i)
+   97:     except ValueError:
+-  98:         if (str(i) >= 'A' and str(i) <= 'Z'):
++  98:         if (str(i) >= 'mutpy' and str(i) <= 'Z'):
+   99:             return int(ord(str(i)) - 55)
+  100:         else:
+  101:             return 0
+  102: 
+--------------------------------------------------------------------------------
+[0.00073 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#  74] CRP MRTD: 
+--------------------------------------------------------------------------------
+   94:     try:
+   95:         int(i)
+   96:         return int(i)
+   97:     except ValueError:
+-  98:         if (str(i) >= 'A' and str(i) <= 'Z'):
++  98:         if (str(i) >= '' and str(i) <= 'Z'):
+   99:             return int(ord(str(i)) - 55)
+  100:         else:
+  101:             return 0
+  102: 
+--------------------------------------------------------------------------------
+[0.00000 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#  75] CRP MRTD: 
+--------------------------------------------------------------------------------
+   94:     try:
+   95:         int(i)
+   96:         return int(i)
+   97:     except ValueError:
+-  98:         if (str(i) >= 'A' and str(i) <= 'Z'):
++  98:         if (str(i) >= 'A' and str(i) <= 'mutpy'):
+   99:             return int(ord(str(i)) - 55)
+  100:         else:
+  101:             return 0
+  102: 
+--------------------------------------------------------------------------------
+[0.00201 s] survived
+   - [#  76] CRP MRTD: 
+--------------------------------------------------------------------------------
+   94:     try:
+   95:         int(i)
+   96:         return int(i)
+   97:     except ValueError:
+-  98:         if (str(i) >= 'A' and str(i) <= 'Z'):
++  98:         if (str(i) >= 'A' and str(i) <= ''):
+   99:             return int(ord(str(i)) - 55)
+  100:         else:
+  101:             return 0
+  102: 
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#  77] CRP MRTD: 
+--------------------------------------------------------------------------------
+   95:         int(i)
+   96:         return int(i)
+   97:     except ValueError:
+   98:         if (str(i) >= 'A' and str(i) <= 'Z'):
+-  99:             return int(ord(str(i)) - 55)
++  99:             return int(ord(str(i)) - 56)
+  100:         else:
+  101:             return 0
+  102: 
+  103: def calculateCheck(lst):
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#  78] CRP MRTD: 
+--------------------------------------------------------------------------------
+   97:     except ValueError:
+   98:         if (str(i) >= 'A' and str(i) <= 'Z'):
+   99:             return int(ord(str(i)) - 55)
+  100:         else:
+- 101:             return 0
++ 101:             return 1
+  102: 
+  103: def calculateCheck(lst):
+  104:     weights = [7, 3, 1]
+  105:     weightIdx = 0
+--------------------------------------------------------------------------------
+[0.00105 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#  79] CRP MRTD: 
+--------------------------------------------------------------------------------
+  100:         else:
+  101:             return 0
+  102: 
+  103: def calculateCheck(lst):
+- 104:     weights = [7, 3, 1]
++ 104:     weights = [8, 3, 1]
+  105:     weightIdx = 0
+  106:     total = 0
+  107:     
+  108:     for i in lst:
+--------------------------------------------------------------------------------
+[0.00043 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#  80] CRP MRTD: 
+--------------------------------------------------------------------------------
+  100:         else:
+  101:             return 0
+  102: 
+  103: def calculateCheck(lst):
+- 104:     weights = [7, 3, 1]
++ 104:     weights = [7, 4, 1]
+  105:     weightIdx = 0
+  106:     total = 0
+  107:     
+  108:     for i in lst:
+--------------------------------------------------------------------------------
+[0.00000 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#  81] CRP MRTD: 
+--------------------------------------------------------------------------------
+  100:         else:
+  101:             return 0
+  102: 
+  103: def calculateCheck(lst):
+- 104:     weights = [7, 3, 1]
++ 104:     weights = [7, 3, 2]
+  105:     weightIdx = 0
+  106:     total = 0
+  107:     
+  108:     for i in lst:
+--------------------------------------------------------------------------------
+[0.00068 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#  82] CRP MRTD: 
+--------------------------------------------------------------------------------
+  101:             return 0
+  102: 
+  103: def calculateCheck(lst):
+  104:     weights = [7, 3, 1]
+- 105:     weightIdx = 0
++ 105:     weightIdx = 1
+  106:     total = 0
+  107:     
+  108:     for i in lst:
+  109:         numVal = getNumericalValue(i)
+--------------------------------------------------------------------------------
+[0.00000 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#  83] CRP MRTD: 
+--------------------------------------------------------------------------------
+  102: 
+  103: def calculateCheck(lst):
+  104:     weights = [7, 3, 1]
+  105:     weightIdx = 0
+- 106:     total = 0
++ 106:     total = 1
+  107:     
+  108:     for i in lst:
+  109:         numVal = getNumericalValue(i)
+  110:         total += numVal * weights[weightIdx]
+--------------------------------------------------------------------------------
+[0.00121 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#  84] CRP MRTD: 
+--------------------------------------------------------------------------------
+  107:     
+  108:     for i in lst:
+  109:         numVal = getNumericalValue(i)
+  110:         total += numVal * weights[weightIdx]
+- 111:         weightIdx = (weightIdx + 1) % len(weights)
++ 111:         weightIdx = (weightIdx + 2) % len(weights)
+  112:     return total % 10
+  113: 
+  114: 
+  115: 
+--------------------------------------------------------------------------------
+[0.00000 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#  85] CRP MRTD: 
+--------------------------------------------------------------------------------
+  108:     for i in lst:
+  109:         numVal = getNumericalValue(i)
+  110:         total += numVal * weights[weightIdx]
+  111:         weightIdx = (weightIdx + 1) % len(weights)
+- 112:     return total % 10
++ 112:     return total % 11
+  113: 
+  114: 
+  115: 
+  116: def scanMRZ():
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [#  86] CRP MRTD: 
+--------------------------------------------------------------------------------
+  123: def decodeMRZ():
+  124:     
+  125:     (line1, line2) = scanMRZ()
+  126:     if (len(line1) != LINE_LENGTH or len(line2) != LINE_LENGTH):
+- 127:         raise Exception(('Lines must both be ' + str(LINE_LENGTH)) + ' characters.')
++ 127:         raise Exception(('mutpy' + str(LINE_LENGTH)) + ' characters.')
+  128:     travelData = TravelData()
+  129:     linePos = 0
+  130:     
+  131:     currentString = ''
+--------------------------------------------------------------------------------
+[0.00120 s] survived
+   - [#  87] CRP MRTD: 
+--------------------------------------------------------------------------------
+  123: def decodeMRZ():
+  124:     
+  125:     (line1, line2) = scanMRZ()
+  126:     if (len(line1) != LINE_LENGTH or len(line2) != LINE_LENGTH):
+- 127:         raise Exception(('Lines must both be ' + str(LINE_LENGTH)) + ' characters.')
++ 127:         raise Exception(('' + str(LINE_LENGTH)) + ' characters.')
+  128:     travelData = TravelData()
+  129:     linePos = 0
+  130:     
+  131:     currentString = ''
+--------------------------------------------------------------------------------
+[0.00100 s] survived
+   - [#  88] CRP MRTD: 
+--------------------------------------------------------------------------------
+  123: def decodeMRZ():
+  124:     
+  125:     (line1, line2) = scanMRZ()
+  126:     if (len(line1) != LINE_LENGTH or len(line2) != LINE_LENGTH):
+- 127:         raise Exception(('Lines must both be ' + str(LINE_LENGTH)) + ' characters.')
++ 127:         raise Exception(('Lines must both be ' + str(LINE_LENGTH)) + 'mutpy')
+  128:     travelData = TravelData()
+  129:     linePos = 0
+  130:     
+  131:     currentString = ''
+--------------------------------------------------------------------------------
+[0.00101 s] survived
+   - [#  89] CRP MRTD: 
+--------------------------------------------------------------------------------
+  123: def decodeMRZ():
+  124:     
+  125:     (line1, line2) = scanMRZ()
+  126:     if (len(line1) != LINE_LENGTH or len(line2) != LINE_LENGTH):
+- 127:         raise Exception(('Lines must both be ' + str(LINE_LENGTH)) + ' characters.')
++ 127:         raise Exception(('Lines must both be ' + str(LINE_LENGTH)) + '')
+  128:     travelData = TravelData()
+  129:     linePos = 0
+  130:     
+  131:     currentString = ''
+--------------------------------------------------------------------------------
+[0.00200 s] survived
+   - [#  90] CRP MRTD: 
+--------------------------------------------------------------------------------
+  125:     (line1, line2) = scanMRZ()
+  126:     if (len(line1) != LINE_LENGTH or len(line2) != LINE_LENGTH):
+  127:         raise Exception(('Lines must both be ' + str(LINE_LENGTH)) + ' characters.')
+  128:     travelData = TravelData()
+- 129:     linePos = 0
++ 129:     linePos = 1
+  130:     
+  131:     currentString = ''
+  132:     travelData.docType = line1[linePos:linePos + 1]
+  133:     linePos += 2
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  91] CRP MRTD: 
+--------------------------------------------------------------------------------
+  127:         raise Exception(('Lines must both be ' + str(LINE_LENGTH)) + ' characters.')
+  128:     travelData = TravelData()
+  129:     linePos = 0
+  130:     
+- 131:     currentString = ''
++ 131:     currentString = 'mutpy'
+  132:     travelData.docType = line1[linePos:linePos + 1]
+  133:     linePos += 2
+  134:     travelData.issuingCountry = line1[linePos:linePos + 3]
+  135:     linePos += 3
+--------------------------------------------------------------------------------
+[0.00200 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  92] CRP MRTD: 
+--------------------------------------------------------------------------------
+  128:     travelData = TravelData()
+  129:     linePos = 0
+  130:     
+  131:     currentString = ''
+- 132:     travelData.docType = line1[linePos:linePos + 1]
++ 132:     travelData.docType = line1[linePos:linePos + 2]
+  133:     linePos += 2
+  134:     travelData.issuingCountry = line1[linePos:linePos + 3]
+  135:     linePos += 3
+  136:     while line1[linePos] != '<':
+--------------------------------------------------------------------------------
+[0.00102 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  93] CRP MRTD: 
+--------------------------------------------------------------------------------
+  129:     linePos = 0
+  130:     
+  131:     currentString = ''
+  132:     travelData.docType = line1[linePos:linePos + 1]
+- 133:     linePos += 2
++ 133:     linePos += 3
+  134:     travelData.issuingCountry = line1[linePos:linePos + 3]
+  135:     linePos += 3
+  136:     while line1[linePos] != '<':
+  137:         currentString += line1[linePos]
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  94] CRP MRTD: 
+--------------------------------------------------------------------------------
+  130:     
+  131:     currentString = ''
+  132:     travelData.docType = line1[linePos:linePos + 1]
+  133:     linePos += 2
+- 134:     travelData.issuingCountry = line1[linePos:linePos + 3]
++ 134:     travelData.issuingCountry = line1[linePos:linePos + 4]
+  135:     linePos += 3
+  136:     while line1[linePos] != '<':
+  137:         currentString += line1[linePos]
+  138:         linePos += 1
+--------------------------------------------------------------------------------
+[0.00101 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  95] CRP MRTD: 
+--------------------------------------------------------------------------------
+  131:     currentString = ''
+  132:     travelData.docType = line1[linePos:linePos + 1]
+  133:     linePos += 2
+  134:     travelData.issuingCountry = line1[linePos:linePos + 3]
+- 135:     linePos += 3
++ 135:     linePos += 4
+  136:     while line1[linePos] != '<':
+  137:         currentString += line1[linePos]
+  138:         linePos += 1
+  139:     travelData.lastName = currentString
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  96] CRP MRTD: 
+--------------------------------------------------------------------------------
+  132:     travelData.docType = line1[linePos:linePos + 1]
+  133:     linePos += 2
+  134:     travelData.issuingCountry = line1[linePos:linePos + 3]
+  135:     linePos += 3
+- 136:     while line1[linePos] != '<':
++ 136:     while line1[linePos] != 'mutpy':
+  137:         currentString += line1[linePos]
+  138:         linePos += 1
+  139:     travelData.lastName = currentString
+  140:     linePos += 2
+--------------------------------------------------------------------------------
+[0.00264 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  97] CRP MRTD: 
+--------------------------------------------------------------------------------
+  132:     travelData.docType = line1[linePos:linePos + 1]
+  133:     linePos += 2
+  134:     travelData.issuingCountry = line1[linePos:linePos + 3]
+  135:     linePos += 3
+- 136:     while line1[linePos] != '<':
++ 136:     while line1[linePos] != '':
+  137:         currentString += line1[linePos]
+  138:         linePos += 1
+  139:     travelData.lastName = currentString
+  140:     linePos += 2
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  98] CRP MRTD: 
+--------------------------------------------------------------------------------
+  134:     travelData.issuingCountry = line1[linePos:linePos + 3]
+  135:     linePos += 3
+  136:     while line1[linePos] != '<':
+  137:         currentString += line1[linePos]
+- 138:         linePos += 1
++ 138:         linePos += 2
+  139:     travelData.lastName = currentString
+  140:     linePos += 2
+  141:     currentString = ''
+  142:     while line1[linePos] != '<':
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [#  99] CRP MRTD: 
+--------------------------------------------------------------------------------
+  136:     while line1[linePos] != '<':
+  137:         currentString += line1[linePos]
+  138:         linePos += 1
+  139:     travelData.lastName = currentString
+- 140:     linePos += 2
++ 140:     linePos += 3
+  141:     currentString = ''
+  142:     while line1[linePos] != '<':
+  143:         currentString += line1[linePos]
+  144:         linePos += 1
+--------------------------------------------------------------------------------
+[0.00112 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 100] CRP MRTD: 
+--------------------------------------------------------------------------------
+  137:         currentString += line1[linePos]
+  138:         linePos += 1
+  139:     travelData.lastName = currentString
+  140:     linePos += 2
+- 141:     currentString = ''
++ 141:     currentString = 'mutpy'
+  142:     while line1[linePos] != '<':
+  143:         currentString += line1[linePos]
+  144:         linePos += 1
+  145:     travelData.firstName = currentString
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 101] CRP MRTD: 
+--------------------------------------------------------------------------------
+  138:         linePos += 1
+  139:     travelData.lastName = currentString
+  140:     linePos += 2
+  141:     currentString = ''
+- 142:     while line1[linePos] != '<':
++ 142:     while line1[linePos] != 'mutpy':
+  143:         currentString += line1[linePos]
+  144:         linePos += 1
+  145:     travelData.firstName = currentString
+  146:     linePos += 1
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 102] CRP MRTD: 
+--------------------------------------------------------------------------------
+  138:         linePos += 1
+  139:     travelData.lastName = currentString
+  140:     linePos += 2
+  141:     currentString = ''
+- 142:     while line1[linePos] != '<':
++ 142:     while line1[linePos] != '':
+  143:         currentString += line1[linePos]
+  144:         linePos += 1
+  145:     travelData.firstName = currentString
+  146:     linePos += 1
+--------------------------------------------------------------------------------
+[0.00201 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 103] CRP MRTD: 
+--------------------------------------------------------------------------------
+  140:     linePos += 2
+  141:     currentString = ''
+  142:     while line1[linePos] != '<':
+  143:         currentString += line1[linePos]
+- 144:         linePos += 1
++ 144:         linePos += 2
+  145:     travelData.firstName = currentString
+  146:     linePos += 1
+  147:     currentString = ''
+  148:     while line1[linePos] != '<':
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 104] CRP MRTD: 
+--------------------------------------------------------------------------------
+  142:     while line1[linePos] != '<':
+  143:         currentString += line1[linePos]
+  144:         linePos += 1
+  145:     travelData.firstName = currentString
+- 146:     linePos += 1
++ 146:     linePos += 2
+  147:     currentString = ''
+  148:     while line1[linePos] != '<':
+  149:         currentString += line1[linePos]
+  150:         linePos += 1
+--------------------------------------------------------------------------------
+[0.00159 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 105] CRP MRTD: 
+--------------------------------------------------------------------------------
+  143:         currentString += line1[linePos]
+  144:         linePos += 1
+  145:     travelData.firstName = currentString
+  146:     linePos += 1
+- 147:     currentString = ''
++ 147:     currentString = 'mutpy'
+  148:     while line1[linePos] != '<':
+  149:         currentString += line1[linePos]
+  150:         linePos += 1
+  151:     travelData.middleName = currentString
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 106] CRP MRTD: 
+--------------------------------------------------------------------------------
+  144:         linePos += 1
+  145:     travelData.firstName = currentString
+  146:     linePos += 1
+  147:     currentString = ''
+- 148:     while line1[linePos] != '<':
++ 148:     while line1[linePos] != 'mutpy':
+  149:         currentString += line1[linePos]
+  150:         linePos += 1
+  151:     travelData.middleName = currentString
+  152:     currentString = ''
+--------------------------------------------------------------------------------
+[0.00199 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 107] CRP MRTD: 
+--------------------------------------------------------------------------------
+  144:         linePos += 1
+  145:     travelData.firstName = currentString
+  146:     linePos += 1
+  147:     currentString = ''
+- 148:     while line1[linePos] != '<':
++ 148:     while line1[linePos] != '':
+  149:         currentString += line1[linePos]
+  150:         linePos += 1
+  151:     travelData.middleName = currentString
+  152:     currentString = ''
+--------------------------------------------------------------------------------
+[0.00200 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 108] CRP MRTD: 
+--------------------------------------------------------------------------------
+  146:     linePos += 1
+  147:     currentString = ''
+  148:     while line1[linePos] != '<':
+  149:         currentString += line1[linePos]
+- 150:         linePos += 1
++ 150:         linePos += 2
+  151:     travelData.middleName = currentString
+  152:     currentString = ''
+  153:     
+  154:     
+--------------------------------------------------------------------------------
+[0.00101 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 109] CRP MRTD: 
+--------------------------------------------------------------------------------
+  148:     while line1[linePos] != '<':
+  149:         currentString += line1[linePos]
+  150:         linePos += 1
+  151:     travelData.middleName = currentString
+- 152:     currentString = ''
++ 152:     currentString = 'mutpy'
+  153:     
+  154:     
+  155:     
+  156:     linePos = 0
+--------------------------------------------------------------------------------
+[0.00099 s] survived
+   - [# 110] CRP MRTD: 
+--------------------------------------------------------------------------------
+  152:     currentString = ''
+  153:     
+  154:     
+  155:     
+- 156:     linePos = 0
++ 156:     linePos = 1
+  157:     travelData.passportNo = line2[linePos:PASSPORT_LENGTH]
+  158:     linePos += PASSPORT_LENGTH
+  159:     travelData.passportCheck = line2[linePos:linePos + 1]
+  160:     linePos += 1
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 111] CRP MRTD: 
+--------------------------------------------------------------------------------
+  155:     
+  156:     linePos = 0
+  157:     travelData.passportNo = line2[linePos:PASSPORT_LENGTH]
+  158:     linePos += PASSPORT_LENGTH
+- 159:     travelData.passportCheck = line2[linePos:linePos + 1]
++ 159:     travelData.passportCheck = line2[linePos:linePos + 2]
+  160:     linePos += 1
+  161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
+  162:     linePos += COUNTRY_CODE_LENGTH
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 112] CRP MRTD: 
+--------------------------------------------------------------------------------
+  156:     linePos = 0
+  157:     travelData.passportNo = line2[linePos:PASSPORT_LENGTH]
+  158:     linePos += PASSPORT_LENGTH
+  159:     travelData.passportCheck = line2[linePos:linePos + 1]
+- 160:     linePos += 1
++ 160:     linePos += 2
+  161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
+  162:     linePos += COUNTRY_CODE_LENGTH
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+  164:     linePos += DATE_LENGTH
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 113] CRP MRTD: 
+--------------------------------------------------------------------------------
+  161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
+  162:     linePos += COUNTRY_CODE_LENGTH
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+  164:     linePos += DATE_LENGTH
+- 165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
++ 165:     travelData.birthdayCheck = line2[linePos:linePos + 2]
+  166:     linePos += 1
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+  168:     linePos += 1
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 114] CRP MRTD: 
+--------------------------------------------------------------------------------
+  162:     linePos += COUNTRY_CODE_LENGTH
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+  164:     linePos += DATE_LENGTH
+  165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
+- 166:     linePos += 1
++ 166:     linePos += 2
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+  168:     linePos += 1
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 115] CRP MRTD: 
+--------------------------------------------------------------------------------
+  164:     linePos += DATE_LENGTH
+  165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
+  166:     linePos += 1
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+- 168:     linePos += 1
++ 168:     linePos += 2
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+  171:     travelData.expirationCheck = line2[linePos:linePos + 1]
+  172:     linePos += 1
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 116] CRP MRTD: 
+--------------------------------------------------------------------------------
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+  168:     linePos += 1
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+- 171:     travelData.expirationCheck = line2[linePos:linePos + 1]
++ 171:     travelData.expirationCheck = line2[linePos:linePos + 2]
+  172:     linePos += 1
+  173:     travelData.personalNo = line2[linePos:len(line2) - 1]
+  174:     linePos = len(line2) - 1
+  175:     travelData.personalNoCheck = line2[linePos]
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 117] CRP MRTD: 
+--------------------------------------------------------------------------------
+  168:     linePos += 1
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+  171:     travelData.expirationCheck = line2[linePos:linePos + 1]
+- 172:     linePos += 1
++ 172:     linePos += 2
+  173:     travelData.personalNo = line2[linePos:len(line2) - 1]
+  174:     linePos = len(line2) - 1
+  175:     travelData.personalNoCheck = line2[linePos]
+  176:     linePos += 1
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 118] CRP MRTD: 
+--------------------------------------------------------------------------------
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+  171:     travelData.expirationCheck = line2[linePos:linePos + 1]
+  172:     linePos += 1
+- 173:     travelData.personalNo = line2[linePos:len(line2) - 1]
++ 173:     travelData.personalNo = line2[linePos:len(line2) - 2]
+  174:     linePos = len(line2) - 1
+  175:     travelData.personalNoCheck = line2[linePos]
+  176:     linePos += 1
+  177:     return travelData
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 119] CRP MRTD: 
+--------------------------------------------------------------------------------
+  170:     linePos += DATE_LENGTH
+  171:     travelData.expirationCheck = line2[linePos:linePos + 1]
+  172:     linePos += 1
+  173:     travelData.personalNo = line2[linePos:len(line2) - 1]
+- 174:     linePos = len(line2) - 1
++ 174:     linePos = len(line2) - 2
+  175:     travelData.personalNoCheck = line2[linePos]
+  176:     linePos += 1
+  177:     return travelData
+  178: 
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 120] CRP MRTD: 
+--------------------------------------------------------------------------------
+  172:     linePos += 1
+  173:     travelData.personalNo = line2[linePos:len(line2) - 1]
+  174:     linePos = len(line2) - 1
+  175:     travelData.personalNoCheck = line2[linePos]
+- 176:     linePos += 1
++ 176:     linePos += 2
+  177:     return travelData
+  178: 
+  179: 
+  180: 
+--------------------------------------------------------------------------------
+[0.00101 s] survived
+   - [# 121] CRP MRTD: 
+--------------------------------------------------------------------------------
+  185: 
+  186: def encodeMRZ(personalNo):
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+- 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
++ 189:     line1 = ((((((data.docType + 'mutpy') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+--------------------------------------------------------------------------------
+[0.00199 s] killed by testEncodeMRZ (MRTDtest.TestMRTD)
+   - [# 122] CRP MRTD: 
+--------------------------------------------------------------------------------
+  185: 
+  186: def encodeMRZ(personalNo):
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+- 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
++ 189:     line1 = ((((((data.docType + '') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+--------------------------------------------------------------------------------
+[0.00251 s] killed by testEncodeMRZ (MRTDtest.TestMRTD)
+   - [# 123] CRP MRTD: 
+--------------------------------------------------------------------------------
+  185: 
+  186: def encodeMRZ(personalNo):
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+- 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
++ 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + 'mutpy') + data.firstName) + '<') + data.middleName
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+--------------------------------------------------------------------------------
+[0.02135 s] killed by testEncodeMRZ (MRTDtest.TestMRTD)
+   - [# 124] CRP MRTD: 
+--------------------------------------------------------------------------------
+  185: 
+  186: def encodeMRZ(personalNo):
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+- 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
++ 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '') + data.firstName) + '<') + data.middleName
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+--------------------------------------------------------------------------------
+[0.00235 s] killed by testEncodeMRZ (MRTDtest.TestMRTD)
+   - [# 125] CRP MRTD: 
+--------------------------------------------------------------------------------
+  185: 
+  186: def encodeMRZ(personalNo):
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+- 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
++ 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + 'mutpy') + data.middleName
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+--------------------------------------------------------------------------------
+[0.00200 s] killed by testEncodeMRZ (MRTDtest.TestMRTD)
+   - [# 126] CRP MRTD: 
+--------------------------------------------------------------------------------
+  185: 
+  186: def encodeMRZ(personalNo):
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+- 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
++ 189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '') + data.middleName
+  190:     while len(line1) < LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+--------------------------------------------------------------------------------
+[0.00203 s] killed by testEncodeMRZ (MRTDtest.TestMRTD)
+   - [# 127] CRP MRTD: 
+--------------------------------------------------------------------------------
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+  189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
+  190:     while len(line1) < LINE_LENGTH:
+- 191:         line1 += '<'
++ 191:         line1 += 'mutpy'
+  192:     
+  193:     
+  194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
+  195:     
+--------------------------------------------------------------------------------
+[0.00200 s] killed by testEncodeMRZ (MRTDtest.TestMRTD)
+   - [# 128] CRP MRTD: 
+--------------------------------------------------------------------------------
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+  189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
+  190:     while len(line1) < LINE_LENGTH:
+- 191:         line1 += '<'
++ 191:         line1 += ''
+  192:     
+  193:     
+  194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
+  195:     
+--------------------------------------------------------------------------------
+[5.04219 s] timeout
+   - [# 129] EHD MRTD: 
+--------------------------------------------------------------------------------
+   94:     try:
+   95:         int(i)
+   96:         return int(i)
+   97:     except ValueError:
+-  98:         if (str(i) >= 'A' and str(i) <= 'Z'):
+-  99:             return int(ord(str(i)) - 55)
+- 100:         else:
+- 101:             return 0
++  98:         raise
++  99: 
++ 100: 
++ 101: 
+  102: 
+  103: def calculateCheck(lst):
+  104:     weights = [7, 3, 1]
+  105:     weightIdx = 0
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [# 130] EXS MRTD: 
+--------------------------------------------------------------------------------
+   94:     try:
+   95:         int(i)
+   96:         return int(i)
+   97:     except ValueError:
+-  98:         if (str(i) >= 'A' and str(i) <= 'Z'):
+-  99:             return int(ord(str(i)) - 55)
+- 100:         else:
+- 101:             return 0
++  98:         pass
++  99: 
++ 100: 
++ 101: 
+  102: 
+  103: def calculateCheck(lst):
+  104:     weights = [7, 3, 1]
+  105:     weightIdx = 0
+--------------------------------------------------------------------------------
+[0.00099 s] incompetent
+   - [# 131] LCR MRTD: 
+--------------------------------------------------------------------------------
+   94:     try:
+   95:         int(i)
+   96:         return int(i)
+   97:     except ValueError:
+-  98:         if (str(i) >= 'A' and str(i) <= 'Z'):
++  98:         if (str(i) >= 'A' or str(i) <= 'Z'):
+   99:             return int(ord(str(i)) - 55)
+  100:         else:
+  101:             return 0
+  102: 
+--------------------------------------------------------------------------------
+[0.00000 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [# 132] LCR MRTD: 
+--------------------------------------------------------------------------------
+  122: 
+  123: def decodeMRZ():
+  124:     
+  125:     (line1, line2) = scanMRZ()
+- 126:     if (len(line1) != LINE_LENGTH or len(line2) != LINE_LENGTH):
++ 126:     if (len(line1) != LINE_LENGTH and len(line2) != LINE_LENGTH):
+  127:         raise Exception(('Lines must both be ' + str(LINE_LENGTH)) + ' characters.')
+  128:     travelData = TravelData()
+  129:     linePos = 0
+  130:     
+--------------------------------------------------------------------------------
+[0.00101 s] killed by testDecodeMRZ4 (MRTDtest.TestMRTD)
+   - [# 133] ROR MRTD: 
+--------------------------------------------------------------------------------
+   94:     try:
+   95:         int(i)
+   96:         return int(i)
+   97:     except ValueError:
+-  98:         if (str(i) >= 'A' and str(i) <= 'Z'):
++  98:         if (str(i) <= 'A' and str(i) <= 'Z'):
+   99:             return int(ord(str(i)) - 55)
+  100:         else:
+  101:             return 0
+  102: 
+--------------------------------------------------------------------------------
+[0.00000 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [# 134] ROR MRTD: 
+--------------------------------------------------------------------------------
+   94:     try:
+   95:         int(i)
+   96:         return int(i)
+   97:     except ValueError:
+-  98:         if (str(i) >= 'A' and str(i) <= 'Z'):
++  98:         if (str(i) > 'A' and str(i) <= 'Z'):
+   99:             return int(ord(str(i)) - 55)
+  100:         else:
+  101:             return 0
+  102: 
+--------------------------------------------------------------------------------
+[0.00212 s] killed by testGetNumericalValue (MRTDtest.TestMRTD)
+   - [# 135] ROR MRTD: 
+--------------------------------------------------------------------------------
+   94:     try:
+   95:         int(i)
+   96:         return int(i)
+   97:     except ValueError:
+-  98:         if (str(i) >= 'A' and str(i) <= 'Z'):
++  98:         if (str(i) >= 'A' and str(i) >= 'Z'):
+   99:             return int(ord(str(i)) - 55)
+  100:         else:
+  101:             return 0
+  102: 
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [# 136] ROR MRTD: 
+--------------------------------------------------------------------------------
+   94:     try:
+   95:         int(i)
+   96:         return int(i)
+   97:     except ValueError:
+-  98:         if (str(i) >= 'A' and str(i) <= 'Z'):
++  98:         if (str(i) >= 'A' and str(i) < 'Z'):
+   99:             return int(ord(str(i)) - 55)
+  100:         else:
+  101:             return 0
+  102: 
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testCalculateCheck (MRTDtest.TestMRTD)
+   - [# 137] ROR MRTD: 
+--------------------------------------------------------------------------------
+  122: 
+  123: def decodeMRZ():
+  124:     
+  125:     (line1, line2) = scanMRZ()
+- 126:     if (len(line1) != LINE_LENGTH or len(line2) != LINE_LENGTH):
++ 126:     if (len(line1) == LINE_LENGTH or len(line2) != LINE_LENGTH):
+  127:         raise Exception(('Lines must both be ' + str(LINE_LENGTH)) + ' characters.')
+  128:     travelData = TravelData()
+  129:     linePos = 0
+  130:     
+--------------------------------------------------------------------------------
+[0.00199 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 138] ROR MRTD: 
+--------------------------------------------------------------------------------
+  122: 
+  123: def decodeMRZ():
+  124:     
+  125:     (line1, line2) = scanMRZ()
+- 126:     if (len(line1) != LINE_LENGTH or len(line2) != LINE_LENGTH):
++ 126:     if (len(line1) != LINE_LENGTH or len(line2) == LINE_LENGTH):
+  127:         raise Exception(('Lines must both be ' + str(LINE_LENGTH)) + ' characters.')
+  128:     travelData = TravelData()
+  129:     linePos = 0
+  130:     
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 139] ROR MRTD: 
+--------------------------------------------------------------------------------
+  132:     travelData.docType = line1[linePos:linePos + 1]
+  133:     linePos += 2
+  134:     travelData.issuingCountry = line1[linePos:linePos + 3]
+  135:     linePos += 3
+- 136:     while line1[linePos] != '<':
++ 136:     while line1[linePos] == '<':
+  137:         currentString += line1[linePos]
+  138:         linePos += 1
+  139:     travelData.lastName = currentString
+  140:     linePos += 2
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 140] ROR MRTD: 
+--------------------------------------------------------------------------------
+  138:         linePos += 1
+  139:     travelData.lastName = currentString
+  140:     linePos += 2
+  141:     currentString = ''
+- 142:     while line1[linePos] != '<':
++ 142:     while line1[linePos] == '<':
+  143:         currentString += line1[linePos]
+  144:         linePos += 1
+  145:     travelData.firstName = currentString
+  146:     linePos += 1
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 141] ROR MRTD: 
+--------------------------------------------------------------------------------
+  144:         linePos += 1
+  145:     travelData.firstName = currentString
+  146:     linePos += 1
+  147:     currentString = ''
+- 148:     while line1[linePos] != '<':
++ 148:     while line1[linePos] == '<':
+  149:         currentString += line1[linePos]
+  150:         linePos += 1
+  151:     travelData.middleName = currentString
+  152:     currentString = ''
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 142] ROR MRTD: 
+--------------------------------------------------------------------------------
+  186: def encodeMRZ(personalNo):
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+  189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
+- 190:     while len(line1) < LINE_LENGTH:
++ 190:     while len(line1) > LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+  194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
+--------------------------------------------------------------------------------
+[0.00341 s] killed by testEncodeMRZ (MRTDtest.TestMRTD)
+   - [# 143] ROR MRTD: 
+--------------------------------------------------------------------------------
+  186: def encodeMRZ(personalNo):
+  187:     data = getTravelDataFromDB(personalNo)
+  188:     
+  189:     line1 = ((((((data.docType + '<') + data.issuingCountry) + data.lastName) + '<<') + data.firstName) + '<') + data.middleName
+- 190:     while len(line1) < LINE_LENGTH:
++ 190:     while len(line1) <= LINE_LENGTH:
+  191:         line1 += '<'
+  192:     
+  193:     
+  194:     line2 = ((((((((data.passportNo + data.passportCheck) + data.countryCode) + data.birthday) + data.birthdayCheck) + data.sex) + data.expirationDate) + data.expirationCheck) + data.personalNo) + data.personalNoCheck
+--------------------------------------------------------------------------------
+[0.00200 s] killed by testEncodeMRZ (MRTDtest.TestMRTD)
+   - [# 144] ROR MRTD: 
+--------------------------------------------------------------------------------
+  199: 
+  200: def checkMismatches(travelData):
+  201:     
+  202:     errors = TravelDataError()
+- 203:     if int(travelData.passportCheck) != calculateCheck(travelData.passportNo):
++ 203:     if int(travelData.passportCheck) == calculateCheck(travelData.passportNo):
+  204:         errors.passportError = True
+  205:     else:
+  206:         errors.passportError = False
+  207:     
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testCheckMismatches (MRTDtest.TestMRTD)
+   - [# 145] ROR MRTD: 
+--------------------------------------------------------------------------------
+  204:         errors.passportError = True
+  205:     else:
+  206:         errors.passportError = False
+  207:     
+- 208:     if int(travelData.birthdayCheck) != calculateCheck(travelData.birthday):
++ 208:     if int(travelData.birthdayCheck) == calculateCheck(travelData.birthday):
+  209:         errors.birthdayError = True
+  210:     else:
+  211:         errors.birthdayError = False
+  212:     
+--------------------------------------------------------------------------------
+[0.00101 s] killed by testCheckMismatches (MRTDtest.TestMRTD)
+   - [# 146] ROR MRTD: 
+--------------------------------------------------------------------------------
+  209:         errors.birthdayError = True
+  210:     else:
+  211:         errors.birthdayError = False
+  212:     
+- 213:     if int(travelData.expirationCheck) != calculateCheck(travelData.expirationDate):
++ 213:     if int(travelData.expirationCheck) == calculateCheck(travelData.expirationDate):
+  214:         errors.expirationError = True
+  215:     else:
+  216:         errors.expirationError = False
+  217:     
+--------------------------------------------------------------------------------
+[0.00111 s] killed by testCheckMismatches (MRTDtest.TestMRTD)
+   - [# 147] ROR MRTD: 
+--------------------------------------------------------------------------------
+  214:         errors.expirationError = True
+  215:     else:
+  216:         errors.expirationError = False
+  217:     
+- 218:     if int(travelData.personalNoCheck) != calculateCheck(travelData.personalNo):
++ 218:     if int(travelData.personalNoCheck) == calculateCheck(travelData.personalNo):
+  219:         errors.personalError = True
+  220:     else:
+  221:         errors.personalError = False
+  222:     return errors
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testCheckMismatches (MRTDtest.TestMRTD)
+   - [# 148] SIR MRTD: 
+--------------------------------------------------------------------------------
+  128:     travelData = TravelData()
+  129:     linePos = 0
+  130:     
+  131:     currentString = ''
+- 132:     travelData.docType = line1[linePos:linePos + 1]
++ 132:     travelData.docType = line1[:linePos + 1]
+  133:     linePos += 2
+  134:     travelData.issuingCountry = line1[linePos:linePos + 3]
+  135:     linePos += 3
+  136:     while line1[linePos] != '<':
+--------------------------------------------------------------------------------
+[0.00201 s] survived
+   - [# 149] SIR MRTD: 
+--------------------------------------------------------------------------------
+  128:     travelData = TravelData()
+  129:     linePos = 0
+  130:     
+  131:     currentString = ''
+- 132:     travelData.docType = line1[linePos:linePos + 1]
++ 132:     travelData.docType = line1[linePos:]
+  133:     linePos += 2
+  134:     travelData.issuingCountry = line1[linePos:linePos + 3]
+  135:     linePos += 3
+  136:     while line1[linePos] != '<':
+--------------------------------------------------------------------------------
+[0.00101 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 150] SIR MRTD: 
+--------------------------------------------------------------------------------
+  130:     
+  131:     currentString = ''
+  132:     travelData.docType = line1[linePos:linePos + 1]
+  133:     linePos += 2
+- 134:     travelData.issuingCountry = line1[linePos:linePos + 3]
++ 134:     travelData.issuingCountry = line1[:linePos + 3]
+  135:     linePos += 3
+  136:     while line1[linePos] != '<':
+  137:         currentString += line1[linePos]
+  138:         linePos += 1
+--------------------------------------------------------------------------------
+[0.00101 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 151] SIR MRTD: 
+--------------------------------------------------------------------------------
+  130:     
+  131:     currentString = ''
+  132:     travelData.docType = line1[linePos:linePos + 1]
+  133:     linePos += 2
+- 134:     travelData.issuingCountry = line1[linePos:linePos + 3]
++ 134:     travelData.issuingCountry = line1[linePos:]
+  135:     linePos += 3
+  136:     while line1[linePos] != '<':
+  137:         currentString += line1[linePos]
+  138:         linePos += 1
+--------------------------------------------------------------------------------
+[0.00201 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 152] SIR MRTD: 
+--------------------------------------------------------------------------------
+  153:     
+  154:     
+  155:     
+  156:     linePos = 0
+- 157:     travelData.passportNo = line2[linePos:PASSPORT_LENGTH]
++ 157:     travelData.passportNo = line2[:PASSPORT_LENGTH]
+  158:     linePos += PASSPORT_LENGTH
+  159:     travelData.passportCheck = line2[linePos:linePos + 1]
+  160:     linePos += 1
+  161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
+--------------------------------------------------------------------------------
+[0.00200 s] survived
+   - [# 153] SIR MRTD: 
+--------------------------------------------------------------------------------
+  153:     
+  154:     
+  155:     
+  156:     linePos = 0
+- 157:     travelData.passportNo = line2[linePos:PASSPORT_LENGTH]
++ 157:     travelData.passportNo = line2[linePos:]
+  158:     linePos += PASSPORT_LENGTH
+  159:     travelData.passportCheck = line2[linePos:linePos + 1]
+  160:     linePos += 1
+  161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
+--------------------------------------------------------------------------------
+[0.00112 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 154] SIR MRTD: 
+--------------------------------------------------------------------------------
+  155:     
+  156:     linePos = 0
+  157:     travelData.passportNo = line2[linePos:PASSPORT_LENGTH]
+  158:     linePos += PASSPORT_LENGTH
+- 159:     travelData.passportCheck = line2[linePos:linePos + 1]
++ 159:     travelData.passportCheck = line2[:linePos + 1]
+  160:     linePos += 1
+  161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
+  162:     linePos += COUNTRY_CODE_LENGTH
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 155] SIR MRTD: 
+--------------------------------------------------------------------------------
+  155:     
+  156:     linePos = 0
+  157:     travelData.passportNo = line2[linePos:PASSPORT_LENGTH]
+  158:     linePos += PASSPORT_LENGTH
+- 159:     travelData.passportCheck = line2[linePos:linePos + 1]
++ 159:     travelData.passportCheck = line2[linePos:]
+  160:     linePos += 1
+  161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
+  162:     linePos += COUNTRY_CODE_LENGTH
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+--------------------------------------------------------------------------------
+[0.00199 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 156] SIR MRTD: 
+--------------------------------------------------------------------------------
+  157:     travelData.passportNo = line2[linePos:PASSPORT_LENGTH]
+  158:     linePos += PASSPORT_LENGTH
+  159:     travelData.passportCheck = line2[linePos:linePos + 1]
+  160:     linePos += 1
+- 161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
++ 161:     travelData.countryCode = line2[:linePos + COUNTRY_CODE_LENGTH]
+  162:     linePos += COUNTRY_CODE_LENGTH
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+  164:     linePos += DATE_LENGTH
+  165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
+--------------------------------------------------------------------------------
+[0.00101 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 157] SIR MRTD: 
+--------------------------------------------------------------------------------
+  157:     travelData.passportNo = line2[linePos:PASSPORT_LENGTH]
+  158:     linePos += PASSPORT_LENGTH
+  159:     travelData.passportCheck = line2[linePos:linePos + 1]
+  160:     linePos += 1
+- 161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
++ 161:     travelData.countryCode = line2[linePos:]
+  162:     linePos += COUNTRY_CODE_LENGTH
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+  164:     linePos += DATE_LENGTH
+  165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 158] SIR MRTD: 
+--------------------------------------------------------------------------------
+  159:     travelData.passportCheck = line2[linePos:linePos + 1]
+  160:     linePos += 1
+  161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
+  162:     linePos += COUNTRY_CODE_LENGTH
+- 163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
++ 163:     travelData.birthday = line2[:linePos + DATE_LENGTH]
+  164:     linePos += DATE_LENGTH
+  165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
+  166:     linePos += 1
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 159] SIR MRTD: 
+--------------------------------------------------------------------------------
+  159:     travelData.passportCheck = line2[linePos:linePos + 1]
+  160:     linePos += 1
+  161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
+  162:     linePos += COUNTRY_CODE_LENGTH
+- 163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
++ 163:     travelData.birthday = line2[linePos:]
+  164:     linePos += DATE_LENGTH
+  165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
+  166:     linePos += 1
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 160] SIR MRTD: 
+--------------------------------------------------------------------------------
+  161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
+  162:     linePos += COUNTRY_CODE_LENGTH
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+  164:     linePos += DATE_LENGTH
+- 165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
++ 165:     travelData.birthdayCheck = line2[:linePos + 1]
+  166:     linePos += 1
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+  168:     linePos += 1
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 161] SIR MRTD: 
+--------------------------------------------------------------------------------
+  161:     travelData.countryCode = line2[linePos:linePos + COUNTRY_CODE_LENGTH]
+  162:     linePos += COUNTRY_CODE_LENGTH
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+  164:     linePos += DATE_LENGTH
+- 165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
++ 165:     travelData.birthdayCheck = line2[linePos:]
+  166:     linePos += 1
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+  168:     linePos += 1
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 162] SIR MRTD: 
+--------------------------------------------------------------------------------
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+  164:     linePos += DATE_LENGTH
+  165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
+  166:     linePos += 1
+- 167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
++ 167:     travelData.sex = line2[:linePos + SEX_LENGTH]
+  168:     linePos += 1
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+  171:     travelData.expirationCheck = line2[linePos:linePos + 1]
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 163] SIR MRTD: 
+--------------------------------------------------------------------------------
+  163:     travelData.birthday = line2[linePos:linePos + DATE_LENGTH]
+  164:     linePos += DATE_LENGTH
+  165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
+  166:     linePos += 1
+- 167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
++ 167:     travelData.sex = line2[linePos:]
+  168:     linePos += 1
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+  171:     travelData.expirationCheck = line2[linePos:linePos + 1]
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 164] SIR MRTD: 
+--------------------------------------------------------------------------------
+  165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
+  166:     linePos += 1
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+  168:     linePos += 1
+- 169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
++ 169:     travelData.expirationDate = line2[:linePos + DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+  171:     travelData.expirationCheck = line2[linePos:linePos + 1]
+  172:     linePos += 1
+  173:     travelData.personalNo = line2[linePos:len(line2) - 1]
+--------------------------------------------------------------------------------
+[0.00175 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 165] SIR MRTD: 
+--------------------------------------------------------------------------------
+  165:     travelData.birthdayCheck = line2[linePos:linePos + 1]
+  166:     linePos += 1
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+  168:     linePos += 1
+- 169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
++ 169:     travelData.expirationDate = line2[linePos:]
+  170:     linePos += DATE_LENGTH
+  171:     travelData.expirationCheck = line2[linePos:linePos + 1]
+  172:     linePos += 1
+  173:     travelData.personalNo = line2[linePos:len(line2) - 1]
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 166] SIR MRTD: 
+--------------------------------------------------------------------------------
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+  168:     linePos += 1
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+- 171:     travelData.expirationCheck = line2[linePos:linePos + 1]
++ 171:     travelData.expirationCheck = line2[:linePos + 1]
+  172:     linePos += 1
+  173:     travelData.personalNo = line2[linePos:len(line2) - 1]
+  174:     linePos = len(line2) - 1
+  175:     travelData.personalNoCheck = line2[linePos]
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 167] SIR MRTD: 
+--------------------------------------------------------------------------------
+  167:     travelData.sex = line2[linePos:linePos + SEX_LENGTH]
+  168:     linePos += 1
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+- 171:     travelData.expirationCheck = line2[linePos:linePos + 1]
++ 171:     travelData.expirationCheck = line2[linePos:]
+  172:     linePos += 1
+  173:     travelData.personalNo = line2[linePos:len(line2) - 1]
+  174:     linePos = len(line2) - 1
+  175:     travelData.personalNoCheck = line2[linePos]
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 168] SIR MRTD: 
+--------------------------------------------------------------------------------
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+  171:     travelData.expirationCheck = line2[linePos:linePos + 1]
+  172:     linePos += 1
+- 173:     travelData.personalNo = line2[linePos:len(line2) - 1]
++ 173:     travelData.personalNo = line2[:len(line2) - 1]
+  174:     linePos = len(line2) - 1
+  175:     travelData.personalNoCheck = line2[linePos]
+  176:     linePos += 1
+  177:     return travelData
+--------------------------------------------------------------------------------
+[0.00099 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+   - [# 169] SIR MRTD: 
+--------------------------------------------------------------------------------
+  169:     travelData.expirationDate = line2[linePos:linePos + DATE_LENGTH]
+  170:     linePos += DATE_LENGTH
+  171:     travelData.expirationCheck = line2[linePos:linePos + 1]
+  172:     linePos += 1
+- 173:     travelData.personalNo = line2[linePos:len(line2) - 1]
++ 173:     travelData.personalNo = line2[linePos:]
+  174:     linePos = len(line2) - 1
+  175:     travelData.personalNoCheck = line2[linePos]
+  176:     linePos += 1
+  177:     return travelData
+--------------------------------------------------------------------------------
+[0.00100 s] killed by testDecodeMRZ (MRTDtest.TestMRTD)
+[*] Mutation score [15.83598 s]: 91.9%
+   - all: 169
+   - killed: 135 (79.9%)
+   - survived: 12 (7.1%)
+   - incompetent: 21 (12.4%)
+   - timeout: 1 (0.6%)

@@ -41,18 +41,18 @@ class TravelData:
         self.personalNo = perN
         self.personalNoCheck = perC
 
-    def printData(self): #Check digits are in parenthesis next to the appropriate field
-        print("Document Type: " + self.docType)
-        print("Issuing Country: " + self.issuingCountry)
-        print("Last Name: " + self.lastName)
-        print("First Name: " + self.firstName)
-        print("Middle Name: " + self.middleName)
-        print("Passport Number: " + self.passportNo + " (" + self.passportCheck + ")")
-        print("Country Code: " + self.countryCode)
-        print("Birthday: " + self.birthday + " (" + self.birthdayCheck + ")")
-        print("Sex: " + self.sex)
-        print("Expiration Date: " + self.expirationDate + " (" + self.expirationCheck + ")")
-        print("Personal Number: " + self.personalNo + " (" + self.personalNoCheck + ")")
+#    def printData(self): #Check digits are in parenthesis next to the appropriate field
+#        print("Document Type: " + self.docType)
+#        print("Issuing Country: " + self.issuingCountry)
+#        print("Last Name: " + self.lastName)
+#        print("First Name: " + self.firstName)
+#        print("Middle Name: " + self.middleName)
+#        print("Passport Number: " + self.passportNo + " (" + self.passportCheck + ")")
+#        print("Country Code: " + self.countryCode)
+#        print("Birthday: " + self.birthday + " (" + self.birthdayCheck + ")")
+#        print("Sex: " + self.sex)
+#        print("Expiration Date: " + self.expirationDate + " (" + self.expirationCheck + ")")
+#        print("Personal Number: " + self.personalNo + " (" + self.personalNoCheck + ")")
 
 
 
@@ -70,22 +70,22 @@ class TravelDataError:
         self.expirationError = eE
         self.personalError = perE
 
-    def report(self):
-        errorsFound = False
-        if(self.passportError):
-            print("Error in Passport Check Digit")
-            errorsFound = True
-        if(self.birthdayError):
-            print("Error in Birthday Check Digit")
-            errorsFound = True
-        if(self.expirationError):
-            print("Error in Expiration Date Check Digit")
-            errorsFound = True
-        if(self.personalError):
-            print("Error in Personal Number Check Digit")
-            errorsFound = True
-        if(not errorsFound):
-            print("No errors found")
+#    def report(self):
+#        errorsFound = False
+#        if(self.passportError):
+#            print("Error in Passport Check Digit")
+#            errorsFound = True
+#        if(self.birthdayError):
+#            print("Error in Birthday Check Digit")
+#            errorsFound = True
+#        if(self.expirationError):
+#            print("Error in Expiration Date Check Digit")
+#            errorsFound = True
+#        if(self.personalError):
+#            print("Error in Personal Number Check Digit")
+#            errorsFound = True
+#        if(not errorsFound):
+#            print("No errors found")
 
 
 #Functions
@@ -123,10 +123,11 @@ def scanMRZ():
 def decodeMRZ():
     #TODO
     (line1, line2) = scanMRZ()
+    if(len(line1) != LINE_LENGTH or len(line2) != LINE_LENGTH):
+        raise Exception("Lines must both be " + str(LINE_LENGTH) + " characters.")
     travelData = TravelData()
     linePos = 0
     #Reading Line 1
-    #TODO
     currentString = "" #Used for variable sized strings
     travelData.docType = line1[linePos:linePos+1]
     linePos += 2 #To account for <
@@ -180,9 +181,9 @@ def decodeMRZ():
 def getTravelDataFromDB(personalNo):
     #Empty function, needs to be mocked
     return
-    
+
+#TODO: Determine whether a line being too long/short throws an error or is just padded/cut off
 def encodeMRZ(personalNo):
-    #TODO
     data = getTravelDataFromDB(personalNo) #What needs to be mocked in test cases, this implementation expects a TravelData object
     #Encoding Line 1
     line1 = data.docType + "<" + data.issuingCountry + data.lastName + "<<" + data.firstName + "<" + data.middleName
@@ -220,11 +221,11 @@ def checkMismatches(travelData):
         errors.personalError = False
     return errors
 
-def quickRun():
-    line1 = "P<UTOERIKSSON<<ANNA<MARIA<<<<<<<<<<<<<<<<<<<"
-    line2 = "L898902C36UTO7408122F1204159ZE184226B<<<<<<1"
-    data = decodeMRZ(line1, line2)
-    data.printData()
-    errors = checkMismatches(data)
-    errors.report()
+#def quickRun():
+#    line1 = "P<UTOERIKSSON<<ANNA<MARIA<<<<<<<<<<<<<<<<<<<"
+#    line2 = "L898902C36UTO7408122F1204159ZE184226B<<<<<<1"
+#    data = decodeMRZ(line1, line2)
+#    data.printData()
+#    errors = checkMismatches(data)
+#    errors.report()
 
