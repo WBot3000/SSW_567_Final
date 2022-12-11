@@ -1,13 +1,13 @@
 import json
+import time
+
+
 
 with open("records_encoded.json", "r") as persondata:
     encoded = json.load(persondata)["records_encoded"]
 
 
 encodedLists = [item.split(";") for item in encoded]
-
-# print(encodedLists[2][1])
-
 
 line1 = []
 line2 = []
@@ -133,7 +133,7 @@ def validateDate(date):
 
 #Requirement 1
 def scanMRZ(x):
-    for i in range(100):
+    for i in range(x):
         line1.append(encodedLists[i][0])
         line2.append(encodedLists[i][1])
 
@@ -144,8 +144,9 @@ def scanMRZ(x):
 
 #Requirement 2
 #Each line seems to be 44 characters
-def decodeMRZ():
-    (line1, line2) = scanMRZ(100)
+def decodeMRZ(x):
+    tic = time.perf_counter()
+    (line1, line2) = scanMRZ(x)
 
     for i in line1:
         for j in line2:
@@ -209,9 +210,11 @@ def decodeMRZ():
             linePos = len(j)-1
             travelData.personalNoCheck = j[linePos]
             linePos += 1 #Technically unneccesary but did it to keep consistency
-            return travelData
+            toc = time.perf_counter()
+    return print("Start:", tic, "End:", toc)
 
-decodeMRZ()
+
+decodeMRZ(1000)
 
 #Requirement 3
 def getTravelDataFromDB(personalNo):
