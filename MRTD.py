@@ -24,7 +24,7 @@ class TravelData:
     #personalNo
     #personalNoCheck
 
-    def __init__(self, dT=None, iC=None, lN=None, fN=None, mN=None, passN=None, pC=None, cC=None, b=None, bC=None, s=None, eD=None, eC=None, perN=None, perC=None):
+    def __init__(self, dT="", iC="", lN="", fN="", mN="", passN="", pC="", cC="", b="", bC="", s="", eD="", eC="", perN="", perC=""):
         self.docType = dT
         self.issuingCountry = iC
         self.lastName = lN
@@ -137,7 +137,7 @@ def decodeMRZ():
     linePos += 2 #To account for <
     travelData.issuingCountry = line1[linePos:linePos+3]
     linePos +=3
-    while(line1[linePos] != "<"): #Parsing last name
+    while(line1[linePos] != "<" and linePos < LINE_LENGTH): #Parsing last name
         if(line1[linePos] < "A" or line1[linePos] > "Z"): #Check to make sure the name is valid
             raise Exception("Invalid character " + line1[linePos] + " in last name")
         currentString += line1[linePos]
@@ -145,7 +145,7 @@ def decodeMRZ():
     travelData.lastName = currentString
     linePos += 2 #Skip the second < and go straight to the first letter of the first name
     currentString = "" #So you can use it again for the other fields
-    while(line1[linePos] != "<"):
+    while(line1[linePos] != "<" and linePos < LINE_LENGTH):
         if(line1[linePos] < "A" or line1[linePos] > "Z"):
             raise Exception("Invalid character " + line1[linePos] + " in first name")
         currentString += line1[linePos]
@@ -153,7 +153,7 @@ def decodeMRZ():
     travelData.firstName = currentString
     linePos += 1
     currentString = ""
-    while(line1[linePos] != "<"):
+    while(line1[linePos] != "<" and linePos < LINE_LENGTH):
         if(line1[linePos] < "A" or line1[linePos] > "Z"):
             raise Exception("Invalid character " + line1[linePos] + " in middle name")
         currentString += line1[linePos]
@@ -205,7 +205,7 @@ def encodeMRZ(personalNo):
         line1 += "<"
 
     #Encoding Line 2
-    line2 = data.passportNo + data.passportCheck + data.countryCode + data.birthday + data.birthdayCheck + data.sex + data.expirationDate + data.expirationCheck + data.personalNo + data.personalNoCheck
+    line2 = data.passportNo + str(calculateCheck(data.passportNo)) + data.countryCode + data.birthday + str(calculateCheck(data.birthday)) + data.sex + data.expirationDate + str(calculateCheck(data.expirationDate)) + data.personalNo + str(calculateCheck(data.personalNo))
     #NOTE: Padding is stored in the personal number according to decodeMRZ, so none added here
     if (len(line2) != LINE_LENGTH):
         raise Exception("Second line is not " + str(LINE_LENGTH) + " characters.")

@@ -16,8 +16,12 @@ annaLine1 = "P<UTOERIKSSON<<ANNA<MARIA<<<<<<<<<<<<<<<<<<<"
 annaLine2 = "L898902C36UTO7408122F1204159ZE184226B<<<<<<1"
 georgeLine1 = "P<UTOJORGE<<GEORGE<G<<<<<<<<<<<<<<<<<<<<<<<<"
 georgeLine2 = "G30RG3ABC6UTO6909264M1405116EGROEG<<<<<<<<<7"
+#Used for encodeMRZ, since that corrects the incorrect check digits
+fixedGeorgeLine2 = "G30RG3ABC6UTO6909264M1405118EGROEG<<<<<<<<<9"
 willLine1 = "P<UTOFRANKLIN<<WILLIAM<TRAVIS<<<<<<<<<<<<<<<"
 willLine2 = "46NQW09071UTO9201302M1603039WX123U22XIESAL<9"
+#Same as George's fixed line
+fixedWillLine2 = "46NQW09077UTO9201305M1603039WX123U22XIESAL<9"
 
 #Used to check edge cases for decoding MRZ. Besides too long/too short, they are based off of Anna's lines
 tooLongLine = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
@@ -200,8 +204,8 @@ class TestMRTD(unittest.TestCase):
     @mock.patch("MRTD.getTravelDataFromDB", side_effect = mockDBFunc)
     def testEncodeMRZ(self, mockData):
         self.assertEqual(encodeMRZ("ZE184226B<<<<<<"), (annaLine1, annaLine2), "Data for Anna not being encoded properly")
-        self.assertEqual(encodeMRZ("EGROEG<<<<<<<<<"), (georgeLine1, georgeLine2), "Data for George not being encoded properly")
-        self.assertEqual(encodeMRZ("WX123U22XIESAL<"), (willLine1, willLine2), "Data for William not being encoded properly")
+        self.assertEqual(encodeMRZ("EGROEG<<<<<<<<<"), (georgeLine1, fixedGeorgeLine2), "Data for George not being encoded properly")
+        self.assertEqual(encodeMRZ("WX123U22XIESAL<"), (willLine1, fixedWillLine2), "Data for William not being encoded properly")
         with self.assertRaises(Exception):
             encodeMRZ("TESTINGLONG<<<<")
         with self.assertRaises(Exception):
