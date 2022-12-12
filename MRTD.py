@@ -1,16 +1,97 @@
 import json
 import time
 
-
-
 with open("records_encoded.json", "r") as persondata:
     encoded = json.load(persondata)["records_encoded"]
-
 
 encodedLists = [item.split(";") for item in encoded]
 
 line1 = []
 line2 = []
+
+
+#Requirement 1
+def scanMRZ(x):
+    for i in range(x):
+        line1.append(encodedLists[i][0])
+        line2.append(encodedLists[i][1])
+
+    return (line1, line2)
+
+
+
+#Requirement 2
+#Each line seems to be 44 characters
+def decodeMRZ(x):
+    tic = time.perf_counter()
+    (line1, line2) = scanMRZ(x)
+
+    for i in line1:
+        for j in line2:
+            
+            if(len(i) != LINE_LENGTH or len(j) != LINE_LENGTH):
+                raise Exception("Lines must both be " + str(LINE_LENGTH) + " characters.")
+            travelData = TravelData()
+            linePos = 0
+            #Reading Line 1
+            currentString = "" #Used for variable sized strings
+            travelData.docType = i[linePos:linePos+1]
+            linePos += 2 #To account for <
+            travelData.issuingCountry = i[linePos:linePos+3]
+            linePos +=3
+            while(i[linePos] != "<"): #Parsing last name
+                if(i[linePos] < "A" or i[linePos] > "Z"): #Check to make sure the name is valid
+                    raise Exception("Invalid character " + i[linePos] + " in last name")
+                currentString += i[linePos]
+                linePos += 1
+            travelData.lastName = currentString
+            linePos += 2 #Skip the second < and go straight to the first letter of the first name
+            currentString = "" #So you can use it again for the other fields
+            while(i[linePos] != "<"):
+                if(i[linePos] < "A" or i[linePos] > "Z"):
+                    raise Exception("Invalid character " + i[linePos] + " in first name")
+                currentString += i[linePos]
+                linePos += 1
+            travelData.firstName = currentString
+            linePos += 1
+            currentString = ""
+            while(i[linePos] != "<"):
+                if(i[linePos] < "A" or i[linePos] > "Z"):
+                    raise Exception("Invalid character " + i[linePos] + " in middle name")
+                currentString += i[linePos]
+                linePos += 1
+            travelData.middleName = currentString
+            currentString = "" #Not necessary, just used to keep pattern
+    
+
+    #Reading Line 2
+            linePos = 0
+            travelData.passportNo = j[linePos:PASSPORT_LENGTH]
+            linePos += PASSPORT_LENGTH
+            travelData.passportCheck = j[linePos:linePos+1]
+            linePos += 1
+            travelData.countryCode = j[linePos:linePos+COUNTRY_CODE_LENGTH]
+            linePos += COUNTRY_CODE_LENGTH
+            travelData.birthday = j[linePos:linePos+DATE_LENGTH]
+            validateDate(travelData.birthday)
+            linePos += DATE_LENGTH
+            travelData.birthdayCheck = j[linePos:linePos+1]
+            linePos += 1
+            travelData.sex = j[linePos:linePos+SEX_LENGTH]
+            linePos += 1
+            travelData.expirationDate = j[linePos:linePos+DATE_LENGTH]
+            validateDate(travelData.expirationDate)
+            linePos += DATE_LENGTH
+            travelData.expirationCheck = j[linePos:linePos+1]
+            linePos += 1
+            travelData.personalNo = j[linePos:len(j)-1]
+            linePos = len(j)-1
+            travelData.personalNoCheck = j[linePos]
+            linePos += 1 #Technically unneccesary but did it to keep consistency
+            toc = time.perf_counter()
+    return print("Time took:", toc - tic)
+
+
 PASSPORT_LENGTH = 9
 COUNTRY_CODE_LENGTH = 3
 DATE_LENGTH = 6
@@ -130,91 +211,77 @@ def validateDate(date):
             raise Exception("Invalid character " + char + " in date")
     
 
-
 #Requirement 1
-def scanMRZ(x):
-    for i in range(x):
-        line1.append(encodedLists[i][0])
-        line2.append(encodedLists[i][1])
+# def scanMRZ():
+#     #Empty function, needs to be mocked
+#     return
 
-    return (line1, line2)
-
-# print(scanMRZ()[0])
-# print(scanMRZ()[1])
 
 #Requirement 2
 #Each line seems to be 44 characters
-def decodeMRZ(x):
-    tic = time.perf_counter()
-    (line1, line2) = scanMRZ(x)
-
-    for i in line1:
-        for j in line2:
-            
-            if(len(i) != LINE_LENGTH or len(j) != LINE_LENGTH):
-                raise Exception("Lines must both be " + str(LINE_LENGTH) + " characters.")
-            travelData = TravelData()
-            linePos = 0
-            #Reading Line 1
-            currentString = "" #Used for variable sized strings
-            travelData.docType = i[linePos:linePos+1]
-            linePos += 2 #To account for <
-            travelData.issuingCountry = i[linePos:linePos+3]
-            linePos +=3
-            while(i[linePos] != "<"): #Parsing last name
-                if(i[linePos] < "A" or i[linePos] > "Z"): #Check to make sure the name is valid
-                    raise Exception("Invalid character " + i[linePos] + " in last name")
-                currentString += i[linePos]
-                linePos += 1
-            travelData.lastName = currentString
-            linePos += 2 #Skip the second < and go straight to the first letter of the first name
-            currentString = "" #So you can use it again for the other fields
-            while(i[linePos] != "<"):
-                if(i[linePos] < "A" or i[linePos] > "Z"):
-                    raise Exception("Invalid character " + i[linePos] + " in first name")
-                currentString += i[linePos]
-                linePos += 1
-            travelData.firstName = currentString
-            linePos += 1
-            currentString = ""
-            while(i[linePos] != "<"):
-                if(i[linePos] < "A" or i[linePos] > "Z"):
-                    raise Exception("Invalid character " + i[linePos] + " in middle name")
-                currentString += i[linePos]
-                linePos += 1
-            travelData.middleName = currentString
-            currentString = "" #Not necessary, just used to keep pattern
+# def decodeMRZ():
+#     (line1, line2) = scanMRZ()
+#     if(len(line1) != LINE_LENGTH or len(line2) != LINE_LENGTH):
+#         raise Exception("Lines must both be " + str(LINE_LENGTH) + " characters.")
+#     travelData = TravelData()
+#     linePos = 0
+#     #Reading Line 1
+#     currentString = "" #Used for variable sized strings
+#     travelData.docType = line1[linePos:linePos+1]
+#     linePos += 2 #To account for <
+#     travelData.issuingCountry = line1[linePos:linePos+3]
+#     linePos +=3
+#     while(line1[linePos] != "<"): #Parsing last name
+#         if(line1[linePos] < "A" or line1[linePos] > "Z"): #Check to make sure the name is valid
+#             raise Exception("Invalid character " + line1[linePos] + " in last name")
+#         currentString += line1[linePos]
+#         linePos += 1
+#     travelData.lastName = currentString
+#     linePos += 2 #Skip the second < and go straight to the first letter of the first name
+#     currentString = "" #So you can use it again for the other fields
+#     while(line1[linePos] != "<"):
+#         if(line1[linePos] < "A" or line1[linePos] > "Z"):
+#             raise Exception("Invalid character " + line1[linePos] + " in first name")
+#         currentString += line1[linePos]
+#         linePos += 1
+#     travelData.firstName = currentString
+#     linePos += 1
+#     currentString = ""
+#     while(line1[linePos] != "<"):
+#         if(line1[linePos] < "A" or line1[linePos] > "Z"):
+#             raise Exception("Invalid character " + line1[linePos] + " in middle name")
+#         currentString += line1[linePos]
+#         linePos += 1
+#     travelData.middleName = currentString
+#     currentString = "" #Not necessary, just used to keep pattern
     
 
-    #Reading Line 2
-            linePos = 0
-            travelData.passportNo = j[linePos:PASSPORT_LENGTH]
-            linePos += PASSPORT_LENGTH
-            travelData.passportCheck = j[linePos:linePos+1]
-            linePos += 1
-            travelData.countryCode = j[linePos:linePos+COUNTRY_CODE_LENGTH]
-            linePos += COUNTRY_CODE_LENGTH
-            travelData.birthday = j[linePos:linePos+DATE_LENGTH]
-            validateDate(travelData.birthday)
-            linePos += DATE_LENGTH
-            travelData.birthdayCheck = j[linePos:linePos+1]
-            linePos += 1
-            travelData.sex = j[linePos:linePos+SEX_LENGTH]
-            linePos += 1
-            travelData.expirationDate = j[linePos:linePos+DATE_LENGTH]
-            validateDate(travelData.expirationDate)
-            linePos += DATE_LENGTH
-            travelData.expirationCheck = j[linePos:linePos+1]
-            linePos += 1
-            travelData.personalNo = j[linePos:len(j)-1]
-            linePos = len(j)-1
-            travelData.personalNoCheck = j[linePos]
-            linePos += 1 #Technically unneccesary but did it to keep consistency
-            toc = time.perf_counter()
-    return print("Start:", tic, "End:", toc)
+#     #Reading Line 2
+#     linePos = 0
+#     travelData.passportNo = line2[linePos:PASSPORT_LENGTH]
+#     linePos += PASSPORT_LENGTH
+#     travelData.passportCheck = line2[linePos:linePos+1]
+#     linePos += 1
+#     travelData.countryCode = line2[linePos:linePos+COUNTRY_CODE_LENGTH]
+#     linePos += COUNTRY_CODE_LENGTH
+#     travelData.birthday = line2[linePos:linePos+DATE_LENGTH]
+#     validateDate(travelData.birthday)
+#     linePos += DATE_LENGTH
+#     travelData.birthdayCheck = line2[linePos:linePos+1]
+#     linePos += 1
+#     travelData.sex = line2[linePos:linePos+SEX_LENGTH]
+#     linePos += 1
+#     travelData.expirationDate = line2[linePos:linePos+DATE_LENGTH]
+#     validateDate(travelData.expirationDate)
+#     linePos += DATE_LENGTH
+#     travelData.expirationCheck = line2[linePos:linePos+1]
+#     linePos += 1
+#     travelData.personalNo = line2[linePos:len(line2)-1]
+#     linePos = len(line2)-1
+#     travelData.personalNoCheck = line2[linePos]
+#     linePos += 1 #Technically unneccesary but did it to keep consistency
+#     return travelData
 
-
-decodeMRZ(1000)
 
 #Requirement 3
 def getTravelDataFromDB(personalNo):
