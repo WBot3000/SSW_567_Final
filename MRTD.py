@@ -3,9 +3,7 @@ COUNTRY_CODE_LENGTH = 3
 DATE_LENGTH = 6
 SEX_LENGTH = 1
 LINE_LENGTH = 44
-#PERSONAL_NUMBER_LENGTH = 9 #Commented out b/c I think this is actually variable
 
-#TODO: Should checks be stored as strings or integers?
 class TravelData:
     #Fields (all are stored as strings)
     #docType
@@ -41,22 +39,8 @@ class TravelData:
         self.personalNo = perN
         self.personalNoCheck = perC
 
-#    def printData(self): #Check digits are in parenthesis next to the appropriate field
-#        print("Document Type: " + self.docType)
-#        print("Issuing Country: " + self.issuingCountry)
-#        print("Last Name: " + self.lastName)
-#        print("First Name: " + self.firstName)
-#        print("Middle Name: " + self.middleName)
-#        print("Passport Number: " + self.passportNo + " (" + self.passportCheck + ")")
-#        print("Country Code: " + self.countryCode)
-#        print("Birthday: " + self.birthday + " (" + self.birthdayCheck + ")")
-#        print("Sex: " + self.sex)
-#        print("Expiration Date: " + self.expirationDate + " (" + self.expirationCheck + ")")
-#        print("Personal Number: " + self.personalNo + " (" + self.personalNoCheck + ")")
 
 
-
-#TODO: Should this have a reference to the TravelData it checks?
 class TravelDataError:
     #Fields (all booleans)
     #passportError
@@ -70,22 +54,6 @@ class TravelDataError:
         self.expirationError = eE
         self.personalError = perE
 
-#    def report(self):
-#        errorsFound = False
-#        if(self.passportError):
-#            print("Error in Passport Check Digit")
-#            errorsFound = True
-#        if(self.birthdayError):
-#            print("Error in Birthday Check Digit")
-#            errorsFound = True
-#        if(self.expirationError):
-#            print("Error in Expiration Date Check Digit")
-#            errorsFound = True
-#        if(self.personalError):
-#            print("Error in Personal Number Check Digit")
-#            errorsFound = True
-#        if(not errorsFound):
-#            print("No errors found")
 
 
 #Functions
@@ -97,6 +65,8 @@ def getNumericalValue(i):
     except ValueError:
         if (str(i) >= 'A' and str(i) <= 'Z'):
             return int(ord(str(i)) - 55)
+        elif(str(i) >= 'a' and str(i) <= 'z'):
+            return int(ord(str(i)) - 87)
         else:
             return 0
 
