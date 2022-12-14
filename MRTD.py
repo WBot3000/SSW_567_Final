@@ -107,24 +107,24 @@ def decodeMRZ():
     linePos += 2 #To account for <
     travelData.issuingCountry = line1[linePos:linePos+3]
     linePos +=3
-    while(line1[linePos] != "<" and linePos < LINE_LENGTH): #Parsing last name
-        if(line1[linePos] < "A" or line1[linePos] > "Z"): #Check to make sure the name is valid
+    while(linePos < LINE_LENGTH and line1[linePos] != "<"): #Parsing last name
+        if(not((line1[linePos] >= "A" and line1[linePos] <= "Z") or (line1[linePos] >= "a" and line1[linePos] <= "z"))): #Check to make sure the name is valid
             raise Exception("Invalid character " + line1[linePos] + " in last name")
         currentString += line1[linePos]
         linePos += 1
     travelData.lastName = currentString
     linePos += 2 #Skip the second < and go straight to the first letter of the first name
     currentString = "" #So you can use it again for the other fields
-    while(line1[linePos] != "<" and linePos < LINE_LENGTH):
-        if(line1[linePos] < "A" or line1[linePos] > "Z"):
+    while(linePos < LINE_LENGTH and line1[linePos] != "<"):
+        if(not((line1[linePos] >= "A" and line1[linePos] <= "Z") or (line1[linePos] >= "a" and line1[linePos] <= "z"))):
             raise Exception("Invalid character " + line1[linePos] + " in first name")
         currentString += line1[linePos]
         linePos += 1
     travelData.firstName = currentString
     linePos += 1
     currentString = ""
-    while(line1[linePos] != "<" and linePos < LINE_LENGTH):
-        if(line1[linePos] < "A" or line1[linePos] > "Z"):
+    while(linePos < LINE_LENGTH and line1[linePos] != "<"):
+        if(not((line1[linePos] >= "A" and line1[linePos] <= "Z") or (line1[linePos] >= "a" and line1[linePos] <= "z"))):
             raise Exception("Invalid character " + line1[linePos] + " in middle name")
         currentString += line1[linePos]
         linePos += 1
@@ -206,12 +206,3 @@ def checkMismatches(travelData):
     else:
         errors.personalError = False
     return errors
-
-#def quickRun():
-#    line1 = "P<UTOERIKSSON<<ANNA<MARIA<<<<<<<<<<<<<<<<<<<"
-#    line2 = "L898902C36UTO7408122F1204159ZE184226B<<<<<<1"
-#    data = decodeMRZ(line1, line2)
-#    data.printData()
-#    errors = checkMismatches(data)
-#    errors.report()
-
